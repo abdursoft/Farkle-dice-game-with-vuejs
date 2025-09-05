@@ -1,5 +1,6 @@
 <script setup>
 import InputField from '@/components/InputField.vue';
+import Loading from '@/components/partials/Loading.vue';
 import TextButton from '@/components/TextButton.vue';
 import User from '@/components/User.vue';
 import router from '@/router';
@@ -25,8 +26,8 @@ function setScore(){
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-center bg-slate-400 p-3 min-h-screen">
-        <div class="w-full max-w-[600px] min-h-70 bg-white rounded-md shadow-md p-3">
+    <div class="w-full flex items-center justify-center min-h-screen bg-orange-500">
+        <!-- <div class="w-full max-w-[600px] min-h-70 bg-white rounded-md shadow-md p-3">
             <User v-if="playerIndex == 1" user-index="1" v-on:return-user="getUser" />
             <User v-if="playerIndex == 2" user-index="2" v-on:return-user="getUser" />
 
@@ -38,6 +39,8 @@ function setScore(){
                     <TextButton title="Start Game" @click="setScore" type="button" />
                 </div>
             </div>
-        </div>
+        </div> -->
+
+        <Loading />
     </div>
 </template>
