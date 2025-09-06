@@ -1,21 +1,21 @@
 <template>
     <div class="flex flex-col">
         <!-- Main Actions -->
-        <div class="flex items-center justify-between mt-4 gap-3">
+        <div class="flex items-center justify-between mt-20 md:mt-10 gap-3">
             <div class="flex items-center justify-center flex-col">
-                <DiceIcon class="w-[65px] h-[65px] bg-white rounded-full p-2 text-white" />
-                <small class="text-[11px] bg-[#9E5B2B] text-white px-3 py-1 rounded-full">Your Dice</small>
+                <DiceIcon class="w-[55px] h-[55px] bg-white rounded-full p-2 text-white" />
+                <small class="text-[9px] md:text-[11px] bg-[#9E5B2B] text-white px-1 md:px-3 py-1 rounded-md md:rounded-full">Your Dice</small>
             </div>
 
-            <div class="w-60 bg-orange-500 relative rounded-[18px] p-3 cursor-pointer">
+            <div class="w-55 bg-orange-500 relative rounded-[18px] p-3 cursor-pointer">
                 <button @click="goPlayerVS" class="w-64 py-1 text-white font-bold cursor-pointer">
                     NEW GAME
                 </button>
                 <div class="bg-black rounded-full h-5 text-center text-white text-sm">0/6000</div>
             </div>
              <div class="flex items-center justify-center flex-col">
-                <Icon icon="streamline-ultimate-color:ads-window" width="44" height="44" />
-                <small class="text-[11px] bg-[#9E5B2B] text-white px-3 py-1 rounded-full">No Ads</small>
+                <Icon icon="streamline-ultimate-color:ads-window" width="40" height="40" />
+                <small class="text-[9px] md:text-[11px] bg-[#9E5B2B] text-white px-1 md:px-3 py-1 rounded-md md:rounded-full">No Ads</small>
             </div>
         </div>
         <div class="w-full mx-auto flex items-center justify-center mt-10">

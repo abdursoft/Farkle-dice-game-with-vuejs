@@ -1,16 +1,12 @@
 <script setup>
 import Fedition from '@/components/farkle/Fedition.vue';
-import FGame from '@/components/farkle/FGame.vue';
-import FRoll from '@/components/farkle/FRoll.vue';
-import FScore from '@/components/farkle/FScore.vue';
+import Fmove from '@/components/farkle/Fmove.vue';
 
 </script>
 
 <template>
-    <div>
-        <!-- <FGame /> -->
-        <FScore />
-        <FRoll />
+    <div class="w-full flex items-center justify-center min-h-screen bg-orange-500">
         <Fedition />
+        <!-- <Fmove /> -->
     </div>
 </template>

@@ -7,12 +7,30 @@ import VS from '@/assets/images/vs.png'
 import Dice5 from '@/assets/icons/dice5.svg'
 import Dice2 from '@/assets/icons/dice2.svg'
 import Progress from '../partials/Progress.vue';
+import { useFarkleStore } from '@/stores/farkleStore';
 
 const router = useRouter();
 
+const props = defineProps({
+    mode:{
+        String,
+        default:'pvp'
+    },
+    roll:{
+        Boolean,
+        default: true
+    }
+})
+
+const farkle = useFarkleStore();
+
 
 function openGame() {
-    router.push({ name: 'lobby' })
+    farkle.addUser('Jhon',1);
+    farkle.addUser('Doe',2);
+    farkle.setGameMode(props.mode);
+    farkle.setAutoRoll(props.roll);
+    router.push({ name: 'test' })
 }
 </script>
 
