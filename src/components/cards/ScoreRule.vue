@@ -8,19 +8,19 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
 </script>
 
 <template>
-    <div class="w-full flex justify-between bg-amber-600 rounded-md p-1">
-        <div class="w-[100px]">
+    <div class="w-full flex justify-between bg-amber-600 rounded-md p-1 max-h-[200px] overflow-y-auto">
+        <div class="w-[95px]">
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
                     <Dice1 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>100</p>
+                <p class="text-[11px]">100</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
                     <Dice5 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>50</p>
+                <p class="text-[11px]">50</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
@@ -28,7 +28,7 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
                     <Dice1 class="w-[20px] h-[20px]"/>
                     <Dice1 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>1000</p>
+                <p class="text-[11px]">1000</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
@@ -36,7 +36,7 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
                     <Dice2 class="w-[20px] h-[20px]"/>
                     <Dice2 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>200</p>
+                <p class="text-[11px]">200</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
@@ -44,7 +44,7 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
                     <Dice3 class="w-[20px] h-[20px]"/>
                     <Dice3 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>300</p>
+                <p class="text-[11px]">300</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
@@ -52,7 +52,7 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
                     <Dice4 class="w-[20px] h-[20px]"/>
                     <Dice4 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>400</p>
+                <p class="text-[11px]">400</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
@@ -60,7 +60,7 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
                     <Dice5 class="w-[20px] h-[20px]"/>
                     <Dice5 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>500</p>
+                <p class="text-[11px]">500</p>
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center gap-1">
@@ -68,7 +68,7 @@ import Dice6 from '@/assets/icons/white/dice6.svg';
                     <Dice6 class="w-[20px] h-[20px]"/>
                     <Dice6 class="w-[20px] h-[20px]"/>
                 </div>
-                <p>600</p>
+                <p class="text-[11px]">600</p>
             </div>
         </div>
         <div class="flex-1">

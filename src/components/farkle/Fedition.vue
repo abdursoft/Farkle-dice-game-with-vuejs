@@ -21,28 +21,20 @@
       <!-- rows (top -> 0, bottom -> 5). We position rows vertically by index -->
       <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-3">
         <!-- only render dice that have landed -->
-        <template v-if="row.length == 0">
+        <template v-if="row.length >= 0">
           <div class="flex items-center gap-2">
             <template v-for="(place, pIndex) in getDicePlaceholder(rowIndex)" :key="pIndex">
-            <div class="dice scored">
-              
-            </div>
-          </template>
+              <div class="dice scored" :data-index="pIndex" :row-index="rowIndex">
+              </div>
+            </template>
           </div>
-        </template>
-        <template v-else>
-          <template v-for="(dice, dIndex) in row" :key="dice.id+'_'+dIndex">
-            <div v-if="dice.landed" class="dice scored" :style="getScoredDiceStyle(dice)">
-              {{ dice.value }}
-            </div>
-          </template>
         </template>
       </div>
 
 
       <!-- rolling area sits above bottom-left of container (we place rolls at absolute coords) -->
-      <div class="flex w-full py-7 items-center justify-between gap-1 bg-amber-700 px-2" style="height: 120px;">
-        <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
+      <div class="flex w-full py-7 items-center gap-2 bg-amber-700" style="height: 120px;">
+        <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :data-id="i" :class="{
           'not-clickable': !isDieClickable(dice),
           'suggested': suggestedIds.has(dice.id)
         }" :style="getRollingDiceStyle(dice, i)" @click="onDieClick(dice)">
@@ -99,6 +91,8 @@ const rollCount = ref(0);
 const canRoll = ref(true);
 const showFarkle = ref(false);
 
+const animateOffset = ref(null);
+
 /* Suggested dice & best suggestion */
 const suggestedIds = reactive(new Set());
 const bestSuggestion = ref(null);
@@ -110,9 +104,9 @@ const hotDicePending = ref(false);
 /* ----- Helper utilities ----- */
 const rand1to6 = () => Math.floor(Math.random() * 6) + 1;
 
-function getDicePlaceholder(num){
+function getDicePlaceholder(num) {
   let numArray = [];
-  for (let i = 0; i <= num+1; i++) {
+  for (let i = 0; i <= num; i++) {
     numArray.push(i);
   }
   return numArray;
@@ -274,7 +268,8 @@ function getScoredDiceStyle(dice) {
   const x = dice.targetX ?? 0;
   const y = dice.targetY ?? 0;
   return {
-    transform: `translate(${x}px, ${y}px)`,
+    transform: `translateY(${y}px)`,
+    transform: `translateX(${x}px)`,
     transition: 'transform 0.6s ease-out',
     position: 'absolute',
   };
@@ -344,12 +339,17 @@ function commitGroup(group) {
     dice.targetY = 0 * 56;
     dice.flying = true;
     dice.landed = false;
-    row.push(dice);
+    dice.pIndex = currentScoringRow.value,
+      row.push(dice);
   });
 
   // add score right away to turnScore (preview/commit semantics assumed)
   const gained = calculateScore(group.map(d => d.value));
   turnScore.value += gained;
+
+  group.map((d,index) => {
+    setAnimateOffset(index,currentScoringRow.value)
+  })
 
   // update diceRemaining
   diceRemaining.value = Math.max(0, diceRemaining.value - group.length);
@@ -359,6 +359,8 @@ function commitGroup(group) {
     setTimeout(() => {
       for (const d of group) {
         const idx = rollingDice.findIndex(r => r.id === d.id);
+        // console.log(rollingDice[idx])
+        // addAnimation(idx);
         if (idx >= 0) rollingDice.splice(idx, 1);
         d.flying = false;
         d.landed = true; // now show in scoringRows
@@ -386,8 +388,41 @@ function commitGroup(group) {
       }
 
       resolve();
-    }, 650); // match CSS transition (600ms) + small buffer
+    }, 1650); // match CSS transition (600ms) + small buffer
   });
+}
+
+function setAnimateOffset(index,row){
+  const el = document.querySelector(
+    `.dice.scored[row-index="${row}"][data-index="${index}"]`
+  );
+  if (!el) return null;
+
+  const rect = el.getBoundingClientRect();
+  animateOffset.value = {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+  }
+}
+
+function addAnimation(index){
+  let id = null;
+  console.log(index)
+  const elem = document.querySelector(
+    `.dice.rolling[data-id="${index}"]`
+  );
+  let pos = 0;
+  clearInterval(id);
+  id = setInterval(frame, 5);
+  function frame() {
+    if (pos == Math.ceil(animateOffset.value?.y)) {
+      clearInterval(id);
+    } else {
+      pos++;
+      elem.style.top = pos + 'px';
+      elem.style.left = pos + 'px';
+    }
+  }
 }
 
 /* Check if it's robot's turn */
@@ -459,7 +494,7 @@ function endTurn() {
   rollCount.value = 0;
   rollingDice.length = 0;
   for (let i = 0; i < scoringRows.length; i++) scoringRows[i] = [];
-  currentScoringRow.value = 5;
+  currentScoringRow.value -= 1;
   diceRemaining.value = 6;
   suggestedIds.clear();
   bestSuggestion.value = null;
@@ -565,9 +600,9 @@ onMounted(() => {
     setTimeout(() => robotPlayTurn(), 300);
   }
 
-    if(farkle.users.length === 0){
-      router.push({name:'playerVs'});
-    }
+  if (farkle.users.length === 0) {
+    router.push({ name: 'playerVs' });
+  }
 });
 </script>
 

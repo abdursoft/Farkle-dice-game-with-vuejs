@@ -2,6 +2,9 @@ import './assets/app.css'
 import './assets/index.css'
 import './assets/base.css'
 
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
@@ -14,3 +17,4 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+AOS.init()
