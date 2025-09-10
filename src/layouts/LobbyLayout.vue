@@ -1,11 +1,18 @@
 <script setup>
+import Settings from '@/components/modal/Settings.vue';
+import { useFarkleStore } from '@/stores/farkleStore';
 import { Icon } from '@iconify/vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const farkle = useFarkleStore();
 
 function goBack(){
     router.push({name:'home'});
+}
+
+function openRoute(name){
+    router.push({name:name})
 }
 </script>
 
@@ -27,19 +34,21 @@ function goBack(){
                     <Icon icon="akar-icons:arrow-back" width="24" height="24" />
                     <span class="text-slate-500">Back</span>
                 </div>
-                <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center cursor-pointer"><Icon icon="qlementine-icons:settings-24" width="24" height="24" /></button>
+                <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center cursor-pointer"><Icon icon="qlementine-icons:settings-24" width="24" height="24" @click="farkle.toggleSettings(true)" /></button>
             </div>
         </div>
-        <div class="w-full h-full max-w-[445px] bg-gray-200 py-5 px-2 flex flex-col items-center justify-center gap-10 pb-30 mt-[60px] pt-10 mb-[60px]">
+        <div class="w-full h-full max-w-[445px] bg-gray-200 py-5 px-2 flex flex-col items-center justify-center gap-10 pb-30 mt-[60px] pt-10 mb-[60px] relative">
             <router-view></router-view>
+            <!-- settings  -->
+            <Settings />
         </div>
 
         <!-- Bottom Nav -->
         <div class="mt-auto flex justify-around py-2 bg-gradient-to-r from-orange-300 to-orange-400 h-[60px] fixed bottom-0 w-full max-w-[445px] z-9">
             <button><Icon icon="fluent:crown-24-filled" width="34" height="34" class="text-slate-700 cursor-pointer hover:text-white transition" /></button>
             <button><Icon icon="ion:dice-sharp" width="34" height="34" class="text-slate-700 cursor-pointer hover:text-white transition" /></button>
-            <button class="w-12 h-12 rounded-full shadow flex items-center justify-center border-1 border-gray-100 p-2 !mb-5"><Icon icon="streamline-flex:home-2-solid" width="54" height="54" class="text-white" /></button>
-            <button><Icon icon="uil:statistics" width="34" height="34" class="text-slate-700 cursor-pointer hover:text-white transition" /></button>
+            <button class="w-12 h-12 rounded-full shadow flex items-center justify-center border-1 border-gray-100 p-2 !mb-5"><Icon icon="streamline-flex:home-2-solid" width="54" height="54" class="text-white cursor-pointer hover:text-gray-300" @click="openRoute('home')" /></button>
+            <button><Icon icon="uil:statistics" width="34" height="34" class="text-slate-700 cursor-pointer hover:text-white transition" @click="openRoute('history')" /></button>
             <button><Icon icon="solar:gamepad-old-bold" width="34" height="34" class="text-slate-700 cursor-pointer hover:text-white transition" /></button>
         </div>
     </div>

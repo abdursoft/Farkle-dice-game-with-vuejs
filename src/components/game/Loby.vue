@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col relative">
         <!-- Main Actions -->
         <div class="flex items-center justify-between mt-20 md:mt-10 gap-3">
             <div class="flex items-center justify-center flex-col">
@@ -8,10 +8,10 @@
             </div>
 
             <div class="w-55 bg-orange-500 relative rounded-[18px] p-3 cursor-pointer">
-                <button @click="goPlayerVS" class="w-64 py-1 text-white font-bold cursor-pointer">
+                <button @click="goPlayerVS('robot')" class="w-full py-1 text-white font-bold cursor-pointer">
                     NEW GAME
                 </button>
-                <div class="bg-black rounded-full h-5 text-center text-white text-sm">0/6000</div>
+                <div class="bg-black rounded-full h-5 text-center text-white text-sm">0/2000</div>
             </div>
              <div class="flex items-center justify-center flex-col">
                 <Icon icon="streamline-ultimate-color:ads-window" width="40" height="40" />
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="w-full mx-auto flex items-center justify-center mt-10">
-            <button @click="goPlayerVS" class="w-65 py-3 rounded-[24px] bg-[#00A2E5] text-white font-bold shadow-lg cursor-pointer">
+            <button @click="goPlayerVS('pvp')" class="w-65 py-3 rounded-[24px] bg-[#00A2E5] text-white font-bold shadow-lg cursor-pointer">
                 PLAY WITH FRIENDS!
             </button>
         </div>
@@ -28,7 +28,6 @@
         <div class="flex flex-col gap-3 mt-6 overflow-y-auto max-h-[70vh] pb-[50px] pt-[10px]">
             <Challenge v-for="challenge in challenges" :key="challenge.id" :user="challenge" />
         </div>
-
     </div>
 </template>
 
@@ -37,11 +36,16 @@ import { Icon } from "@iconify/vue";
 import Challenge from "./Challenge.vue";
 import DiceIcon from "@/assets/icons/dice1.svg"
 import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { useFarkleStore } from "@/stores/farkleStore";
 
 const router = useRouter();
+const farkle = useFarkleStore();
 
-function goPlayerVS(){
-    router.push({name:'playerVs'})
+const showSettings = ref(true);
+
+function goPlayerVS(mode){
+    router.push({name:'playerVs', params:{type:mode}})
 }
 
 const challenges = [

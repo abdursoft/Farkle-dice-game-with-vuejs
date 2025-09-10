@@ -6,9 +6,11 @@ import FRoll from '@/components/farkle/FRoll.vue';
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-center min-h-screen bg-orange-500">
+    <div class="w-full flex items-center justify-center min-h-screen">
+        <div class="w-full flex items-center justify-center h-[100vh] bg-orange-500 max-w-[445px]">
+            <FRoll />
+        </div>
         <!-- <Fedition /> -->
         <!-- <Fmove /> -->
-         <FRoll />
     </div>
 </template>

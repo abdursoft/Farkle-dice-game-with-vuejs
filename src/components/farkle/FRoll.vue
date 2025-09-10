@@ -1,8 +1,8 @@
 <template>
-  <div class="w-full max-w-[445px] mx-auto py-5 relative bg-gray-400 max-h-screen overflow-hidden">
+  <div class="w-full max-w-[445px] mx-auto py-5 relative bg-gray-400 h-[94vh] overflow-hidden">
 
     <!-- score board  -->
-    <div class="w-full flex justify-between gap-2">
+    <div class="w-full flex justify-between">
       <div class="w-[35%]">
         <UserCard />
       </div>
@@ -11,61 +11,66 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-3 my-5 px-2">
-      <div>Turn Score: <strong>{{ turnScore }}</strong></div>
-      <div>Preview: <strong>{{ previewScore }}</strong></div>
-    </div>
-
     <!-- Scoring area -->
-    <div class="relative mb-6 rounded-md">
-      <!-- rows (top -> 0, bottom -> 5). We position rows vertically by index -->
-      <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-3 px-2">
-        <!-- only render dice that have landed -->
-        <template v-if="row.length == 0">
-          <div class="flex items-center gap-2">
-            <template v-for="(place, pIndex) in getDicePlaceholder(rowIndex)" :key="pIndex">
-            <div class="dice scored">
-              
+    <div class="relative mb-6 rounded-md mt-3 h-[52vh] flex items-center justify-between flex-col">
+      <div class="w-full relative">
+        <!-- rows (top -> 0, bottom -> 5). We position rows vertically by index -->
+        <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-3 px-2">
+          <!-- only render dice that have landed -->
+          <template v-if="row.length == 0">
+            <div class="flex items-center gap-2">
+              <template v-for="(place, pIndex) in getDicePlaceholder(rowIndex)" :key="pIndex">
+                <div class="dice scored">
+
+                </div>
+              </template>
             </div>
           </template>
+          <template v-else>
+            <template v-for="(dice, dIndex) in row" :key="dice.id+'_'+dIndex">
+              <div v-if="dice.landed" class="dice scored" data-aos="fade-up" :style="getScoredDiceStyle(dice)">
+                <img :src="`/images/dice${dice.value}.png`" alt="" class="w-full h-full" />
+              </div>
+            </template>
+          </template>
+        </div>
+
+        <!-- farkle overlay -->
+        <transition name="fade">
+          <div v-if="showFarkle"
+            class="absolute inset-0 z-99 flex items-center justify-center bg-red-50/80 text-red-700 font-black text-3xl rounded">
+            FARKLE!
           </div>
-        </template>
-        <template v-else>
-          <template v-for="(dice, dIndex) in row" :key="dice.id+'_'+dIndex">
-            <div v-if="dice.landed" class="dice scored" data-aos="fade-up" :style="getScoredDiceStyle(dice)">
-              {{ dice.value }}
-            </div>
-          </template>
-        </template>
+        </transition>
       </div>
-
-
+      
       <!-- rolling area sits above bottom-left of container (we place rolls at absolute coords) -->
-      <div class="flex w-full items-center gap-2 bg-amber-700 px-2 min-h-[55px]">
-        <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
-          'not-clickable': !isDieClickable(dice),
-          'suggested': suggestedIds.has(dice.id)
-        }" :style="getRollingDiceStyle(dice, i)" @click="onDieClick(dice)">
-          <img :src="icon" v-if="iconLoading" alt="">
-          <p v-else>{{ dice.value }}</p>
+        <div class="flex w-full items-center gap-2 bg-amber-700 px-2 min-h-[55px]">
+          <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
+            'not-clickable': !isDieClickable(dice),
+            'suggested': suggestedIds.has(dice.id)
+          }" :style="getRollingDiceStyle(dice, i)" @click="onDieClick(dice)">
+            <img :src="icon" v-if="iconLoading" alt="" class="w-full h-full">
+            <img v-else :src="`/images/dice${dice.value}.png`" alt="" class="w-full h-full" />
+          </div>
         </div>
-      </div>
-
-      <!-- farkle overlay -->
-      <transition name="fade">
-        <div v-if="showFarkle"
-          class="absolute inset-0 z-99 flex items-center justify-center bg-red-50/80 text-red-700 font-black text-3xl rounded">
-          FARKLE!
-        </div>
-      </transition>
     </div>
     <div class="flex items-center justify-center gap-5 mb-4 fade-up px-3">
-      <button class="px-5 w-full py-3 rounded bg-orange-600 rounded-[18px] text-white cursor-pointer" @click="endTurn">Collect</button>
-      <button class="px-5 cursor-pointer w-full py-3 rounded-[18px] bg-blue-600 text-white disabled:cursor-none disabled:opacity-50"
+      <button class="px-5 w-full py-3 rounded bg-orange-600 rounded-[18px] text-white cursor-pointer"
+        @click="endTurn">Collect</button>
+      <button
+        class="px-5 cursor-pointer w-full py-3 rounded-[18px] bg-blue-600 text-white disabled:cursor-none disabled:opacity-50"
         :disabled="!canRoll || (farkle.gameMode === 'robot' && currentPlayer === 1)" @click="rollDice">
         Roll Dice
       </button>
     </div>
+
+
+    <div class="flex items-center justify-between px-2 absolute top-0 left-0 w-full">
+      <div>Turn Score: <strong>{{ turnScore }}</strong></div>
+      <div>Win Score: <strong>{{ farkle.winScore }}</strong></div>
+    </div>
+    <WinMessage :is-win="farkle.winState" :win-message="farkle.winMessage" @resetGame="playNewGame" />
   </div>
 </template>
 
@@ -75,7 +80,8 @@ import { useFarkleStore } from "@/stores/farkleStore";
 import { ref, reactive, computed, onMounted } from "vue";
 import UserCard from "../cards/UserCard.vue";
 import ScoreRule from "../cards/ScoreRule.vue";
-import { useRouter } from "vue-router";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
+import  WinMessage from '../modal/WinMessage.vue'
 
 import icon from '../../assets/dice-game.gif'
 
@@ -115,7 +121,16 @@ const hotDicePending = ref(false);
 /* ----- Helper utilities ----- */
 const rand1to6 = () => Math.floor(Math.random() * 6) + 1;
 
-function getDicePlaceholder(num){
+function playNewGame(){
+  farkle.restartGame();
+  currentPlayer.value = 0;
+  canRoll.value = true;
+  rollCount.value = 0;
+  turnScore.value = 0;
+  rollDice();
+}
+
+function getDicePlaceholder(num) {
   let numArray = [];
   for (let i = 0; i <= num; i++) {
     numArray.push(i);
@@ -123,7 +138,7 @@ function getDicePlaceholder(num){
   return numArray;
 }
 
-function getRollPlaceholder(num){
+function getRollPlaceholder(num) {
   let numArray = [];
   for (let i = 0; i <= num; i++) {
     numArray.push(i);
@@ -331,7 +346,7 @@ function rollDice() {
   const endLoader = setTimeout(() => {
     iconLoading.value = false;
     clearInterval(endLoader);
-  },400);
+  }, 400);
 
   // compute suggestion and check farkle
   suggestedIds.clear();
@@ -414,7 +429,7 @@ function commitGroup(group) {
 
 /* Check if it's robot's turn */
 function isRobotTurn() {
-  return farkle.gameMode.value === 'robot' && currentPlayer.value === 1;
+  return farkle.gameMode === 'robot' && currentPlayer.value === 1;
 }
 
 /* When the user clicks a die (or robot does), commit appropriate group:
@@ -475,6 +490,8 @@ function endTurn() {
   // bank points to player
   farkle.setScore(currentPlayer.value, turnScore.value)
 
+  iconLoading.value = true;
+
   // reset turn-local state
   turnScore.value = 0;
   previewScore.value = 0;
@@ -489,8 +506,6 @@ function endTurn() {
   hotDicePending.value = false;
   showFarkle.value = false;
 
-  iconLoading.value = true;
-
   // next player
   currentPlayer.value = (currentPlayer.value + 1) % players.length;
 
@@ -500,7 +515,7 @@ function endTurn() {
     setTimeout(() => robotPlayTurn(), 650);
   } else {
     // if farkle.autoRoll enabled, roll for next human
-    if (farkle.autoRoll) setTimeout(() => rollDice(), 300);
+    if (farkle.autoRoll) setTimeout(() => rollDice(), 500);
   }
   iconLoading.value = false;
 }
@@ -590,10 +605,15 @@ onMounted(() => {
     setTimeout(() => robotPlayTurn(), 300);
   }
 
-    if(farkle.users.length === 0){
-      router.push({name:'playerVs'});
-    }
+  if (farkle.users.length <= 0) {
+    router.push({ name: 'lobby' });
+  }
 });
+
+onBeforeRouteLeave((to,from) => {
+  farkle.endGame();
+  return;
+})
 </script>
 
 <style scoped>

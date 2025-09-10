@@ -1,10 +1,12 @@
 <script setup>
-import Register from '@/components/forms/Register.vue';
+import Scores from '@/components/game/Scores.vue';
+
+
 
 </script>
 
 <template>
     <div class="w-full flex items-center justify-center">
-        <Register />
+        <Scores />
     </div>
 </template>

@@ -1,15 +1,18 @@
 <script setup>
 import WinSVG from '@/assets/icons/win.svg'
-import { useRouter } from 'vue-router';
-import Avatar from '@/assets/avatar/avatar1.svg'
-import Player from '@/assets/avatar/avatar2.svg'
+import { useRoute, useRouter } from 'vue-router';
 import VS from '@/assets/images/vs.png'
-import Dice5 from '@/assets/icons/dice5.svg'
-import Dice2 from '@/assets/icons/dice2.svg'
+import Dice5 from '@/assets/icons/white/dice5.svg'
+import Dice2 from '@/assets/icons/white/dice2.svg'
 import Progress from '../partials/Progress.vue';
 import { useFarkleStore } from '@/stores/farkleStore';
+import { computed, onMounted, ref } from 'vue';
+import WinScore from '../modal/WinScore.vue';
 
+const route = useRoute();
 const router = useRouter();
+
+const isPVP = ref(false);
 
 const props = defineProps({
     mode:{
@@ -24,19 +27,35 @@ const props = defineProps({
 
 const farkle = useFarkleStore();
 
+function challengeGame(){
+    router.push({ name: 'test' })
+}
+
+function setGameScore(value){
+    farkle.setWinScore(value);
+    challengeGame();
+}
+
 
 function openGame() {
     farkle.addUser('Jhon',1);
     farkle.addUser('Doe',2);
-    farkle.setGameMode(props.mode);
+    farkle.setGameMode(route.params?.type);
     farkle.setAutoRoll(props.roll);
-    router.push({ name: 'test' })
+    farkle.setWinScore(2000)
+    if(!isPVP.value){
+        challengeGame();
+    }
 }
+
+onMounted(() => {
+    isPVP.value = route.params.type === 'pvp' ? true : false;
+});
 </script>
 
 <template>
     <!-- game lobby initiate  -->
-    <div class="h-[90vh] w-full max-w-[445px] py-5 flex flex-col bg-[#A35028] items-center justify-center gap-10">
+    <div class="h-[90vh] w-full max-w-[445px] py-5 flex flex-col bg-[#A35028] items-center justify-center gap-10 relative">
         <div class="w-full flex items-center justify-center flex-col relative">
             <div class="w-[80px] h-[80px] rounded-full p-1 text-white  absolute -top-20 z-9">
                 <WinSVG class="w-full h-full z-9" />
@@ -51,22 +70,22 @@ function openGame() {
             <div class="w-full mt-5 px-5">
                 <div class="w-full flex items-center justify-between">
                     <div class="flex items-center justify-center flex-col gap-2">
-                        <Avatar class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
+                        <img src="/avatar/avatar1.svg" class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
                         <h2 class="text-xl lilita text-white">You</h2>
                     </div>
                     <div class="flex items-center justify-center flex-col gap-2">
-                        <Player class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
+                        <img src="/avatar/avatar5.svg" class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
                         <h2 class="text-xl lilita text-white">Ota Mendi</h2>
                     </div>
                 </div>
             </div>
-            <div class="w-full flex items-center justify-center -mt-5">
+            <div class="w-full flex items-center justify-center mt-15">
                 <div class="flex items-center justify-center flex-col gap-2">
                     <img :src="VS" class="w-[60px] h-[60px] rounded-full border-1 border-gray-200 p-2" />
                 </div>
             </div>
             <!-- dice queue  -->
-            <div class="w-full px-5 -mt-5">
+            <div class="w-full px-15 -mt-5">
                 <div class="w-full flex items-center justify-between">
                     <div class="flex items-center justify-center flex-col gap-2">
                         <Dice5 class="w-[100px] h-[100px] p-3" />
@@ -76,9 +95,12 @@ function openGame() {
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- progress loader  -->
-         <Progress @end-progress="openGame" title="Farkle initializing" />
+            <!-- progress loader  -->
+            <Progress @end-progress="openGame" title="Farkle initializing" />
+
+            <!-- win score setter  -->
+            <WinScore v-if="isPVP" @callbackScore="setGameScore" />
+        </div>
     </div>
 </template>

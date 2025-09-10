@@ -6,7 +6,7 @@ import { useFarkleStore } from '@/stores/farkleStore';
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-between gap-1 rounded-md my-2 px-1">
+    <div class="w-full flex justify-between gap-1 rounded-md my-2 px-1">
         <div v-for="(user,index) in farkle.users" :key="index" class="w-1/2 relative h-full">
             <div class="w-full text-center flex items-center justify-center flex-col bg-amber-700 rounded-tl-[20px] rounded-tr-[20px]">
                 <img src="/images/dice1.png" alt="You" class="w-[30px] h-[30px] rounded-full -top-15">
