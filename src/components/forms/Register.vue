@@ -4,8 +4,11 @@ import { useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
 import Avatar from '../modal/Avatar.vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useToast } from 'vue-toast-notification';
+import TextButton from '../buttons/TextButton.vue';
 
 const router = useRouter();
+const tost = useToast();
 
 const authStore = useAuthStore();
 
@@ -13,9 +16,11 @@ const userForm = reactive({
     name:'',
     email:'',
     password:'',
-    avatar:''
-})
+    avatar:'',
+});
 
+
+const isLoading = ref(false);
 const isAvatar = ref(false);
 
 function handleAvatar([isOpen,avatar]){
@@ -23,8 +28,20 @@ function handleAvatar([isOpen,avatar]){
     userForm.avatar = avatar;
 }
 
-function goLobby(){
-    router.push({name:'lobby'})
+async function register(){
+    isLoading.value = true;
+    const res = await authStore.register(userForm);
+    if(res.status === 201){
+        tost.success(res.data?.message, {
+            position: 'top-right'
+        });   
+        router.push({name:"lobby"});
+    }else{
+        tost.error(res.response?.data.message, {
+            position: 'top-right'
+        });
+    }
+    isLoading.value = false;
 }
 </script>
 
@@ -52,10 +69,7 @@ function goLobby(){
                 <input type="password" class="w-full p-3 rounded-lg border-2 border-gray-400" v-model="userForm.password" placeholder="Pa$$w0rd!" />
             </div>
             <div class="w-full flex items-center justify-center mt-8">
-                <button
-                    @click="goLobby"
-                    class="rounded-[24px] shadow-lg bg-orange-600 uppercase text-white text-2xl py-2 px-4 border-1 border-slate-500 cursor-pointer lilita">Create
-                    Account</button>
+                <TextButton @click="register" icon="line-md:arrow-right" :loading="isLoading" title="Create Account" />
             </div>
         </div>
 

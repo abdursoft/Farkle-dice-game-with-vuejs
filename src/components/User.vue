@@ -1,8 +1,8 @@
 <script setup>
 import { useGameStore } from '@/stores/gameStore';
 import InputField from './InputField.vue';
-import TextButton from './TextButton.vue';
 import { reactive } from 'vue';
+import TextButton from './buttons/TextButton.vue';
 
 const emit = defineEmits(['returnUser']);
 

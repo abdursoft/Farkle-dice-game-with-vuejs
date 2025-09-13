@@ -42,7 +42,7 @@
       <h3 class="font-bold mb-2">Scored Dice:</h3>
       <transition-group name="fade" tag="div" class="flex gap-4">
         <div
-          v-for="(die, index) in scoredDice"
+          v-for="(die) in scoredDice"
           :key="die.id"
           class="w-16 h-16 flex items-center justify-center text-2xl font-bold bg-yellow-300 rounded-lg transition-transform duration-500"
         >

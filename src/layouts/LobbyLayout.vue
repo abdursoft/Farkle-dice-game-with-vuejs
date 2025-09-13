@@ -1,11 +1,14 @@
 <script setup>
 import Settings from '@/components/modal/Settings.vue';
+import { useAuthStore } from '@/stores/authStore';
 import { useFarkleStore } from '@/stores/farkleStore';
 import { Icon } from '@iconify/vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const farkle = useFarkleStore();
+const authStore = useAuthStore();
 
 function goBack(){
     router.push({name:'home'});
@@ -14,6 +17,10 @@ function goBack(){
 function openRoute(name){
     router.push({name:name})
 }
+
+onMounted(() => {
+    authStore.authCheck();
+});
 </script>
 
 <template>
@@ -22,10 +29,10 @@ function openRoute(name){
         <!-- Top Bar -->
         <div class="flex items-center justify-between p-4 bg-gradient-to-r from-orange-200 to-orange-300 shadow h-[60px] fixed top-0 w-full max-w-[445px] z-9">
             <div class="flex items-center gap-2">
-                <img src="" alt="avatar" class="w-10 h-10 rounded-full border-2 border-white" />
+                <img :src="`/avatar/avatar${authStore.authUser?.avatar}.svg`" alt="avatar" class="w-10 h-10 rounded-full border-2 border-white" />
                 <div class="flex flex-col">
-                    <span class="font-bold text-gray-800">SmoothZen</span>
-                    <span class="text-sm">Best 5400</span>
+                    <span class="font-bold text-gray-800">{{ authStore.authUser?.name }}</span>
+                    <span class="text-sm">Best {{ authStore.authUser?.highest_score ?? '0' }}</span>
                 </div>
             </div>
 

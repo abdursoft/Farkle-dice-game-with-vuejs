@@ -8,7 +8,6 @@ const isProgress = ref(true);
 
 function progress(value){
     isProgress.value = value;
-    console.log(isProgress.value)
 }
 </script>
 

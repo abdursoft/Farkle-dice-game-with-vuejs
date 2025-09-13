@@ -2,7 +2,9 @@
 import { useAuthStore } from '@/stores/authStore';
 import { useFarkleStore } from '@/stores/farkleStore';
 import { Icon } from '@iconify/vue';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref, watchEffect } from 'vue';
+import TextButton from '../buttons/TextButton.vue';
+import { onBeforeRouteLeave } from 'vue-router';
 
 
 const farkle = useFarkleStore();
@@ -17,6 +19,16 @@ const isEdit = ref(false);
 function toggleSettings() {
     farkle.toggleSettings(false);
 }
+
+watchEffect(() => {
+  if (isEdit.value) {
+    user.name = authStore.authUser?.name
+  }
+})
+
+onBeforeRouteLeave((to,from) => {
+   toggleSettings(); 
+})
 
 </script>
 
@@ -34,7 +46,7 @@ function toggleSettings() {
                     class="w-[70px] h-[70px] rounded-full overflow-hidden">
                 <div class="h-[35px] flex-1 bg-gray-300 rounded-br-md rounded-tr-md flex items-center justify-center gap-1">
                     <input v-model="user.name" v-if="isEdit" type="text" class="w-full rounded-lg border-2 border-gray-400" placeholder="JhonDoe" />
-                    <p v-else class="text-slate-800 text-center">JoguMogu</p>
+                    <p v-else class="text-slate-800 text-center">{{ authStore.authUser?.name }}</p>
 
                     <Icon v-if="!isEdit" icon="mynaui:edit-one" width="24" height="24" @click="isEdit = !isEdit" />
                     <Icon v-else icon="system-uicons:cross-circle" width="24" height="24" @click="isEdit = !isEdit" />
@@ -52,7 +64,8 @@ function toggleSettings() {
 
             </div>
             <div class="text-center w-full mt-3 flex flex-col gap-1 px-4">
-                <router-link :to="{ name: 'register' }" class="py-2 px-3 bg-blue-600 rounded-md text-white my-2">Create
+                <TextButton v-if="authStore.authUser?.name" background="bg-red-500" title="Logout" @click="authStore.logout()" />
+                <router-link v-else :to="{ name: 'register' }" class="py-2 px-3 bg-blue-600 rounded-md text-white my-2">Create
                     Account</router-link>
                 <router-link :to="{ name: 'register' }">Already signed up?</router-link>
             </div>

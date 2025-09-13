@@ -36,13 +36,8 @@ import { Icon } from "@iconify/vue";
 import Challenge from "./Challenge.vue";
 import DiceIcon from "@/assets/icons/dice1.svg"
 import { useRouter } from "vue-router";
-import { ref } from "vue";
-import { useFarkleStore } from "@/stores/farkleStore";
 
 const router = useRouter();
-const farkle = useFarkleStore();
-
-const showSettings = ref(true);
 
 function goPlayerVS(mode){
     router.push({name:'playerVs', params:{type:mode}})
