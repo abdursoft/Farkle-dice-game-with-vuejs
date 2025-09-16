@@ -1,6 +1,6 @@
 <script setup>
 import WinSVG from '@/assets/icons/win.svg'
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import VS from '@/assets/images/vs.png'
 import Dice5 from '@/assets/icons/white/dice5.svg'
 import Dice2 from '@/assets/icons/white/dice2.svg'
@@ -8,11 +8,15 @@ import Progress from '../partials/Progress.vue';
 import { useFarkleStore } from '@/stores/farkleStore';
 import { computed, onMounted, ref } from 'vue';
 import WinScore from '../modal/WinScore.vue';
+import { useAuthStore } from '@/stores/authStore';
+import { primaryLight } from '@/services/colors';
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
 
 const isPVP = ref(false);
+const isPlayable = ref(false);
 
 const props = defineProps({
     mode:{
@@ -28,34 +32,56 @@ const props = defineProps({
 const farkle = useFarkleStore();
 
 function challengeGame(){
-    router.push({ name: 'test' })
+    if(isPlayable.value){
+        router.push({ name: 'test' })
+    }
 }
 
-function setGameScore(value){
+async function setGameScore(value){
     farkle.setWinScore(value);
-    challengeGame();
+    
+    const challenge = await farkle.challengeFriend(authStore.friend?.id, farkle.winScore);
+    console.log(challenge);
+
+    if(challenge.status === 201){
+        router.push({name:'test'});
+    }
 }
 
 
 function openGame() {
-    farkle.addUser('Jhon',1);
-    farkle.addUser('Doe',2);
     farkle.setGameMode(route.params?.type);
     farkle.setAutoRoll(props.roll);
     farkle.setWinScore(2000)
     if(!isPVP.value){
+        farkle.addUser('Robot', 'robot');
         challengeGame();
     }
 }
 
-onMounted(() => {
+onBeforeRouteLeave((to, from) => {
+  // Example: detect back navigation with custom logic
+  if (window.history.state?.back) {
+    farkle.resetUsers();
+  }
+})
+
+onMounted(async () => {
     isPVP.value = route.params.type === 'pvp' ? true : false;
+    const friend = await authStore.getFriend(route.params?.playerId);
+    console.log(friend);
+    if(friend.status === 200){
+        isPlayable.value = true;
+        farkle.addUser(authStore.authUser?.name,authStore.authUser?.id,authStore.authUser?.avatar);
+        farkle.addUser(friend.data.friend.name, friend.data.friend.id,friend.data.friend.avatar);
+    }
+
 });
 </script>
 
 <template>
     <!-- game lobby initiate  -->
-    <div class="h-[90vh] w-full max-w-[445px] py-5 flex flex-col bg-[#A35028] items-center justify-center gap-10 relative">
+    <div class="h-[90vh] w-full max-w-[445px] py-5 flex flex-col items-center justify-center gap-10 relative" :style="`background: ${primaryLight}`">
         <div class="w-full flex items-center justify-center flex-col relative">
             <div class="w-[80px] h-[80px] rounded-full p-1 text-white  absolute -top-20 z-9">
                 <WinSVG class="w-full h-full z-9" />
@@ -69,13 +95,9 @@ onMounted(() => {
             <!-- players queue  -->
             <div class="w-full mt-5 px-5">
                 <div class="w-full flex items-center justify-between">
-                    <div class="flex items-center justify-center flex-col gap-2">
-                        <img src="/avatar/avatar1.svg" class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
-                        <h2 class="text-xl lilita text-white">You</h2>
-                    </div>
-                    <div class="flex items-center justify-center flex-col gap-2">
-                        <img src="/avatar/avatar5.svg" class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
-                        <h2 class="text-xl lilita text-white">Ota Mendi</h2>
+                    <div class="flex items-center justify-center flex-col gap-2" v-for="(user, index) in farkle.users" :key="index">
+                        <img :src="`/avatar/avatar${user.avatar}.svg`" class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
+                        <h2 class="text-xl lilita text-white">{{ index == 0 ? 'You' : user.name?.slice(0,8) }}</h2>
                     </div>
                 </div>
             </div>

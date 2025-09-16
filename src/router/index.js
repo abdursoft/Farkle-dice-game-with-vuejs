@@ -15,11 +15,31 @@ const routes = [
       },
       {
         name: "playerVs",
-        path: "/play-vs/:type",
+        path: "/play-vs/:type/:playerId?",
         component: () => import("../views/PlayerVS.vue"),
         meta: { title: "Farkle Initializing" },
       },
     ],
+  },
+  {
+    name:'auth',
+    'path':'/auth',
+    component: () => import("../layouts/AuthLayout.vue"),
+    redirect: 'register',
+    children:[
+      {
+        name: "register",
+        path: "register",
+        component: () => import("../views/Signup.vue"),
+        meta: { title: "Create your FARKLE account" },
+      },
+      {
+        name: "login",
+        path: "login",
+        component: () => import("../views/Signin.vue"),
+        meta: { title: "Signin your FARKLE account" },
+      },
+    ]
   },
   {
     name: "lobby-init",
@@ -32,12 +52,6 @@ const routes = [
         path: "/game-lobby",
         component: () => import("../views/GameLobby.vue"),
         meta: { title: "Farkle Lobby" },
-      },
-      {
-        name: "register",
-        path: "register",
-        component: () => import("../views/Signup.vue"),
-        meta: { title: "Create your FARKLE account" },
       },
       {
         name: "history",

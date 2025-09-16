@@ -9,8 +9,8 @@ import { useFarkleStore } from '@/stores/farkleStore';
     <div class="w-full flex justify-between gap-1 rounded-md my-2 px-1">
         <div v-for="(user,index) in farkle.users" :key="index" class="w-1/2 relative h-full">
             <div class="w-full text-center flex items-center justify-center flex-col bg-amber-700 rounded-tl-[20px] rounded-tr-[20px]">
-                <img src="/images/dice1.png" alt="You" class="w-[30px] h-[30px] rounded-full -top-15">
-                <h3 class="text-[11px] text-white">{{ user.name }}</h3>
+                <img :src="`/avatar/avatar${user.avatar}.svg`" alt="You" class="w-[30px] h-[30px] rounded-full -top-15">
+                <h3 class="text-[11px] text-white">{{ user?.name?.slice(0,6) }}</h3>
                 <h3 class="text-[12px] text-white font-bold">{{ user.score }}</h3>
             </div>
             <div class="mt-3 bg-amber-800 px-2 overflow-hidden rounded-bl-md rounded-br-md">

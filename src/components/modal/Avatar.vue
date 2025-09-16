@@ -1,4 +1,5 @@
 <script setup>
+import { primaryLight, secondary } from '@/services/colors';
 import { useAuthStore } from '@/stores/authStore';
 import { Icon } from '@iconify/vue';
 import { reactive, ref } from 'vue';
@@ -31,9 +32,9 @@ function toggleAvatarModal(){
     <div class="w-full h-screen flex items-center justify-center absolute top-0 left-0 inset-0 z-99 px-3"
         v-if="props.openAvatar">
         <div
-            class="w-[90vw] rounded-lg border-2 bg-gray-200 border-orange-600 px-3 h-auto text-center relative">
+            class="w-[90vw] rounded-lg border-2 border-orange-600 px-3 h-auto text-center relative" :style="`background: ${secondary}`">
             <div class="px-7">
-                <h3 class="text-2xl bg-orange-500 lilita rounded-br-md rounded-bl-md">Profile Avatar!</h3>
+                <h3 class="text-2xl lilita rounded-br-md rounded-bl-md" :style="`background: ${primaryLight}`">Profile Avatar!</h3>
             </div>
             <!-- avatar section  -->
             <div class="w-full flex items-center px-3 flex-wrap mt-5">

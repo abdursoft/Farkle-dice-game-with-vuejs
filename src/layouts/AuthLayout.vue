@@ -18,13 +18,6 @@ function goBack(){
 function openRoute(name){
     router.push({name:name})
 }
-
-onMounted(async () => {
-    const checkAuth = await authStore.authCheck();
-    if(checkAuth?.status === 200){
-        farkle.setAuthUser(authStore.authUser);
-    }
-});
 </script>
 
 <template>

@@ -12,7 +12,7 @@ function progress(value){
 </script>
 
 <template>
-    <div class="h-[90vh] w-full max-w-[445px] bg-white py-5 px-2 flex flex-col items-center justify-center gap-10">
+    <div class="h-[95vh] w-full max-w-[445px] py-5 px-2 flex flex-col items-center justify-center gap-10">
         <!-- logo area  -->
         <div class="w-full flex items-center justify-center flex-col gap-1 py-10">
             <Dice class="w-[100px] h-[100px] delay-300" :class="{'animate-spin':isProgress}" />

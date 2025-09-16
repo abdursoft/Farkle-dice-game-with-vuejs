@@ -1,9 +1,11 @@
+import { FRIENDS, GAME } from "@/Api";
+import apiClient from "@/services/axios";
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 
 export const useFarkleStore = defineStore("farkleStore", () => {
     const users = reactive([]);
-    const authUser = reactive(null);
+    const authUser = ref(null);
     const winScore = ref(0);
     const playable = ref(false);
     const winMessage = ref(null);
@@ -12,6 +14,13 @@ export const useFarkleStore = defineStore("farkleStore", () => {
     const autoRoll = ref(false);
     const gameSound = ref(false);
     const openSettings = ref(false);
+    const openFriends = ref(false);
+    const roundID = ref(null);
+    const challengeId = ref(null);
+
+    function toggleFriends(){
+        openFriends.value = !openFriends.value;
+    }
 
     function setAuthUser(user){
         authUser.value = user;
@@ -45,15 +54,20 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         winMessage.value = message;
     }
 
-    function addUser(name, id, score = 0) {
+    function addUser(name, id, avatar=1, score = 0) {
         if(users.length < 2){
             users.push({
                 id: id,
                 name: name,
+                avatar: avatar,
                 turns:[],
                 score: score,
             });
         }
+    }
+
+    function resetUsers(){
+        users.length = 0;
     }
 
     function endGame(){
@@ -86,6 +100,40 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         });
     }
 
+        async function challengeFriend(id, score) {
+        try {
+            const response = await apiClient.post(FRIENDS.CHALLENGE, { challengee_id: id, challenge_score: score, challenger_id: authUser?.value?.id });  
+            challengeId.value = response.data.id;
+            const round = await gameRound(id);
+            return round;
+        } catch (error) {
+            return error;
+        }   
+    }
+
+    async function acceptChallenge(id){
+        try {
+            const response = await apiClient.post(GAME.CHALLENGE, { challenge_id: id });    
+            roundID.value = response.data.round.id;
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async function gameRound(friendId){
+        console.log('Starting game round...');
+        try {
+            const response = await apiClient.post(GAME.NEW_GAME, { game_challenge_id:challengeId.value, first_player: authUser.value.id, second_player: friendId, score: winScore.value });    
+            roundID.value = response.data.round.id;
+            console.log(response);
+            return response;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+
     return {
         users,
         authUser,
@@ -97,6 +145,8 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         autoRoll,
         gameSound,
         openSettings,
+        openFriends,
+        toggleFriends,
         setAuthUser,
         toggleSettings,
         setGameSound,
@@ -109,6 +159,12 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         setWinMessage,
         setWinState,
         restartGame,
-        endGame
+        endGame,
+        resetUsers,
+        challengeFriend,
+        gameRound,
+        acceptChallenge,
+        roundID,
+        challengeId,
     };
 });

@@ -7,7 +7,7 @@
                 <small class="text-[9px] md:text-[11px] bg-[#9E5B2B] text-white px-1 md:px-3 py-1 rounded-md md:rounded-full">Your Dice</small>
             </div>
 
-            <div class="w-55 bg-orange-500 relative rounded-[18px] p-3 cursor-pointer">
+            <div class="w-55 relative rounded-[18px] p-3 cursor-pointer" :style="`background: ${primaryLight}`">
                 <button @click="goPlayerVS('robot')" class="w-full py-1 text-white font-bold cursor-pointer">
                     NEW GAME
                 </button>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="w-full mx-auto flex items-center justify-center mt-10">
-            <button @click="goPlayerVS('pvp')" class="w-65 py-3 rounded-[24px] bg-[#00A2E5] text-white font-bold shadow-lg cursor-pointer">
+            <button @click="farkle.toggleFriends()" class="w-65 py-3 rounded-[24px] text-white font-bold shadow-lg cursor-pointer" :style="`background: ${tertiary}`">
                 PLAY WITH FRIENDS!
             </button>
         </div>
@@ -28,6 +28,9 @@
         <div class="flex flex-col gap-3 mt-6 overflow-y-auto max-h-[70vh] pb-[50px] pt-[10px]">
             <Challenge v-for="challenge in challenges" :key="challenge.id" :user="challenge" />
         </div>
+
+        <!-- open friends list  -->
+         <Friends />
     </div>
 </template>
 
@@ -36,8 +39,12 @@ import { Icon } from "@iconify/vue";
 import Challenge from "./Challenge.vue";
 import DiceIcon from "@/assets/icons/dice1.svg"
 import { useRouter } from "vue-router";
+import Friends from "../modal/Friends.vue";
+import { useFarkleStore } from "@/stores/farkleStore";
+import { primaryLight, tertiary } from "@/services/colors";
 
 const router = useRouter();
+const farkle = useFarkleStore();
 
 function goPlayerVS(mode){
     router.push({name:'playerVs', params:{type:mode}})

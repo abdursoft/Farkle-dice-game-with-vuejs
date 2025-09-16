@@ -14,3 +14,23 @@ export const AUTH = {
   CHECK: `${ROOT_URL}auth/check`,
   DASHBOARD: `${ROOT_URL}auth/dashboard`
 }
+
+
+export const FRIENDS = {
+  LIST: `${ROOT_URL}friends`,
+  SEARCH: `${ROOT_URL}friends/search`,
+  CHALLENGE: `${ROOT_URL}friends/challenge`,
+  ACCEPT: `${ROOT_URL}friends/accept`,
+  DECLINE: `${ROOT_URL}friends/decline`,
+  REMOVE: `${ROOT_URL}friends/cancel`,
+  DETAILS: (token) => `${ROOT_URL}friends/details/${token}`,
+}
+
+export const GAME = {
+  NEW_GAME: `${ROOT_URL}game/round`,
+  JOIN_GAME: `${ROOT_URL}game/join`,
+  LIST_GAMES: `${ROOT_URL}game/list`,
+  START_GAME: `${ROOT_URL}game/start`,
+  PLAY_TURN: `${ROOT_URL}game/play-turn`,
+  END_GAME: `${ROOT_URL}game/end`
+}

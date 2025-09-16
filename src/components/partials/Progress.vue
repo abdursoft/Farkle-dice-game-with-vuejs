@@ -4,7 +4,7 @@
             <div class="h-6 bg-orange-400 transition-all duration-300" :style="{ width: progress + '%' }"></div>
             <span class="text-center text-white font-bold absolute top-0 left-0 w-full h-full">{{ progress }}%</span>
         </div>
-        <h3 class="text-base uppercase lilita font-[300] text-center">{{ props.title }}...</h3>
+        <h3 class="text-base uppercase lilita font-[300] text-center text-white">{{ props.title }}...</h3>
     </div>
 </template>
 
