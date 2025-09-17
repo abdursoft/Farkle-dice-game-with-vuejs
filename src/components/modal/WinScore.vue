@@ -18,7 +18,7 @@ function setScore(){
 </script>
 
 <template>
-    <div class="w-full h-screen flex items-center justify-center absolute top-0 left-0 inset-0 z-99 px-3">
+    <div class="w-full h-full flex items-center justify-center absolute top-0 left-0 inset-0 z-99 px-3">
         <div class="w-[90vw] rounded-lg border-2 border-orange-600 p-3 h-[200px] text-center text-white" :style="`background: ${primary}`">
             <div class="w-full flex items-center gap-3 border-b-3 border-black">
                 <Icon icon="line-md:arrow-left" width="24" height="24" class="cursor-pointer" @click="router.push({'name':'lobby'})" />

@@ -26,6 +26,13 @@ export const FRIENDS = {
   DETAILS: (token) => `${ROOT_URL}friends/details/${token}`,
 }
 
+export const SCORE = {
+  NEW: `${ROOT_URL}score`,
+  HISTORY: (roundId) => `${ROOT_URL}score/${roundId}`,
+  LEADERBOARD: `${ROOT_URL}score/leaderboard`,
+  DELETE: (roundId) => `${ROOT_URL}score/delete/${roundId}`,
+}
+
 export const GAME = {
   NEW_GAME: `${ROOT_URL}game/round`,
   JOIN_GAME: `${ROOT_URL}game/join`,

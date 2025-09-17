@@ -1,4 +1,4 @@
-import { FRIENDS, GAME } from "@/Api";
+import { FRIENDS, GAME, SCORE } from "@/Api";
 import apiClient from "@/services/axios";
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
@@ -76,10 +76,11 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         users.length = 0;
     }
 
-    function setScore(index, score) {
+    async function setScore(index, score) {
         if (users[index]) {
             users[index].score += score;
             users[index].turns.push(score);
+            await addGameScore(users[index].id, score);
             if (users[index].score >= winScore.value) {
                 setWinState(true);
                 setWinMessage(`${users[index].name} you win the game!`);
@@ -91,13 +92,14 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         playable.value = true;
     }
 
-    function restartGame() {
+    async function restartGame() {
         setWinState(false);
         setWinMessage(null);
         users.forEach((user) => {
             user.score = 0;
             user.turns = []
         });
+        await resetScores();
     }
 
         async function challengeFriend(id, score) {
@@ -125,12 +127,33 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         console.log('Starting game round...');
         try {
             const response = await apiClient.post(GAME.NEW_GAME, { game_challenge_id:challengeId.value, first_player: authUser.value.id, second_player: friendId, score: winScore.value });    
-            roundID.value = response.data.round.id;
-            console.log(response);
+            roundID.value = response.data.id;
             return response;
         } catch (error) {
             console.log(error);
             return error;
+        }
+    }
+
+    async function addGameScore(id, score){
+        try {
+            const response = await apiClient.post(SCORE.NEW,{
+                player_id : id,
+                round_id : roundID.value,
+                score : score
+            });
+            console.log('Score added', response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function resetScores(){
+        try {
+            const response = await apiClient.delete(SCORE.DELETE(roundID.value));
+            console.log('Scores reset', response);
+        } catch (error) {
+            console.log(error);
         }
     }
 

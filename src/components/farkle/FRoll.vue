@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-[445px] mx-auto py-5 relative bg-gray-400 h-[94vh] overflow-hidden">
+  <div class="w-full max-w-[445px] mx-auto py-5 relative h-[94vh] overflow-hidden text-white" :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`">
 
     <!-- score board  -->
     <div class="w-full flex justify-between">
@@ -45,7 +45,7 @@
       </div>
       
       <!-- rolling area sits above bottom-left of container (we place rolls at absolute coords) -->
-        <div class="flex w-full items-center gap-2 bg-amber-700 px-2 min-h-[55px]">
+        <div class="flex w-full items-center gap-2 px-2 min-h-[55px]" :style="`background: ${tertiary}`">
           <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
             'not-clickable': !isDieClickable(dice),
             'suggested': suggestedIds.has(dice.id)
@@ -59,7 +59,7 @@
       <button class="px-5 w-full py-3 rounded bg-orange-600 rounded-[18px] text-white cursor-pointer"
         @click="endTurn">Collect</button>
       <button
-        class="px-5 cursor-pointer w-full py-3 rounded-[18px] bg-blue-600 text-white disabled:cursor-none disabled:opacity-50"
+        class="px-5 cursor-pointer w-full py-3 rounded-[18px] bg-blue-800 text-white disabled:cursor-none disabled:opacity-50"
         :disabled="!canRoll || (farkle.gameMode === 'robot' && currentPlayer === 1)" @click="rollDice">
         Roll Dice
       </button>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-
+import echo from '@/plugins/Echo';
 import { useFarkleStore } from "@/stores/farkleStore";
 import { ref, reactive, computed, onMounted } from "vue";
 import UserCard from "../cards/UserCard.vue";
@@ -84,6 +84,7 @@ import { onBeforeRouteLeave, useRouter } from "vue-router";
 import  WinMessage from '../modal/WinMessage.vue'
 
 import icon from '../../assets/dice-game.gif'
+import { primary, secondary, tertiary } from "@/services/colors";
 
 const farkle = useFarkleStore();
 
@@ -94,6 +95,8 @@ const SLOT = DIE_SIZE + GAP; // 48
 
 /* ---------- Game state ---------- */
 const players = farkle.users;
+
+const scores = ref([]);
 
 const currentPlayer = ref(0); // index into players (0 or 1)
 
@@ -608,6 +611,20 @@ onMounted(() => {
   if (farkle.users.length <= 0) {
     router.push({ name: 'lobby' });
   }
+});
+
+onMounted(() => {
+    echo.channel(`game.round.${farkle.roundID.value}`)
+        .listen('ScoreStored', (event) => {
+            console.log('Score stored:', event.score);
+
+            // Update score list
+            scores.value.push(event.score);
+            console.log('Updated scores:', scores.value);
+
+            // Make Roll button visible for other users
+            canRoll.value = true;
+        });
 });
 
 onBeforeRouteLeave((to,from) => {

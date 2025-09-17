@@ -26,7 +26,7 @@ const isAvatar = ref(false);
 async function login(){
     isLoading.value = true;
     const res = await authStore.login(userForm);
-    if(res.status === 201){
+    if(res.status === 200){
         tost.success(res.data?.message, {
             position: 'top-right'
         });   

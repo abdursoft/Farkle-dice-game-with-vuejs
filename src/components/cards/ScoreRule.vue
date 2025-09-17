@@ -5,10 +5,11 @@ import Dice3 from '@/assets/icons/white/dice3.svg';
 import Dice4 from '@/assets/icons/white/dice4.svg';
 import Dice5 from '@/assets/icons/white/dice5.svg';
 import Dice6 from '@/assets/icons/white/dice6.svg';
+import { tertiary } from '@/services/colors';
 </script>
 
 <template>
-    <div class="w-full flex justify-between gap-2 bg-amber-600 rounded-md p-1 max-h-[200px] overflow-y-auto">
+    <div class="w-full flex justify-between gap-2 rounded-md p-1 max-h-[200px] overflow-y-auto" :style="`background: ${tertiary}`">
         <div class="w-[85px]">
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center">

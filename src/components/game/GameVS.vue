@@ -41,9 +41,8 @@ async function setGameScore(value){
     farkle.setWinScore(value);
     
     const challenge = await farkle.challengeFriend(authStore.friend?.id, farkle.winScore);
-    console.log(challenge);
 
-    if(challenge.status === 201){
+    if(challenge?.status === 201){
         router.push({name:'test'});
     }
 }
@@ -58,13 +57,6 @@ function openGame() {
         challengeGame();
     }
 }
-
-onBeforeRouteLeave((to, from) => {
-  // Example: detect back navigation with custom logic
-  if (window.history.state?.back) {
-    farkle.resetUsers();
-  }
-})
 
 onMounted(async () => {
     isPVP.value = route.params.type === 'pvp' ? true : false;

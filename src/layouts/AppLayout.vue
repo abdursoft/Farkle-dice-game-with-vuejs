@@ -1,7 +1,5 @@
 <script setup>
 import { primary, secondary } from '@/services/colors';
-
-
 </script>
 
 <template>

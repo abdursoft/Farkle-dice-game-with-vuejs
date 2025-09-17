@@ -20,5 +20,6 @@ app.use(createPinia())
 app.use(ToastPlugin)
 app.use(router)
 
+
 app.mount('#app')
 AOS.init()

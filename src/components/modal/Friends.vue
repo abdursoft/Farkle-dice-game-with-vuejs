@@ -37,7 +37,7 @@ function goPlayerVS(playerId, mode='pvp'){
 </script>
 
 <template>
-    <div class="w-full h-screen flex items-center justify-center absolute top-0 left-0 inset-0 z-99 px-3"
+    <div class="w-full h-full flex items-center justify-center absolute top-0 left-0 inset-0 z-99 px-3"
         v-if="farkle.openFriends">
         <div class="w-[90vw] rounded-lg border-2 border-orange-600 px-3 h-auto text-center relative" :style="`background: ${primary}`">
             <div class="px-7">
