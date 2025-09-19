@@ -1,10 +1,10 @@
 <template>
-    <div class="p-4 w-full mx-auto bg-white rounded-2xl shadow-md">
+    <div class="p-4 w-full mx-auto text-white rounded-2xl shadow-md overflow-y-auto" :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`">
         <!-- Header -->
         <div class="flex items-center mb-6">
             <img class="w-16 h-16 rounded-full border-2 border-orange-400" src="" alt="Avatar" />
             <div class="ml-4">
-                <h2 class="font-bold text-lg">{{ username }}</h2>
+                <h2 class="font-bold text-lg">{{ authStore.authUser?.name }}</h2>
                 <div class="flex gap-4 text-sm">
                     <span>LEVEL: {{ level }}</span>
                     <span>COLLECTION: {{ collection }}</span>
@@ -15,7 +15,7 @@
         <!-- Games Played -->
         <h3 class="text-center font-bold mb-2">GAMES PLAYED</h3>
         <div class="flex justify-center mb-6">
-            <canvas id="gamesChart" ref="gamesChart" class="w-[200px] h-[200px]"></canvas>
+            <canvas id="gamesChart" ref="gamesChart" class="w-[100px] h-[100px]"></canvas>
         </div>
         <div class="flex justify-between mb-4">
             <span class="text-blue-500 lilita">Games Won: {{ gamesWon }}</span>
@@ -53,6 +53,8 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js'
+import { useAuthStore } from '@/stores/authStore'
+import { primary, secondary } from '@/services/colors'
 
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController)
 
@@ -70,6 +72,8 @@ const averageRoundScore = 0
 
 const currentStreak = 0
 const highestStreak = 0
+
+const authStore = useAuthStore();
 
 
 onMounted(() => {

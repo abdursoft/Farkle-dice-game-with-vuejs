@@ -47,16 +47,16 @@ async function register(){
 </script>
 
 <template>
-    <div class="w-full max-w-[445px] py-5 px-2 flex flex-col items-center justify-center gap-10 rounded-md text-white" :style="`background: ${primaryLight}`">
+    <div class="w-full max-w-[445px] my-[10px] py-5 px-2 flex flex-col items-center justify-center gap-5 rounded-md text-white relative" :style="`background: ${primaryLight}`">
         <div class="w-full flex items-center justify-center">
-            <div class="w-[150px] h-[150px] rounded-full border-5 border-gray-400 relative p-1">
+            <div class="w-20 w-20 rounded-full border-5 border-gray-400 relative p-1">
                 <img :src="`/avatar/avatar${authStore.avatar}.svg`" alt="">
-                <div class="w-[40px] h-[40px] absolute rounded-full top-10 -right-4 bg-slate-700 p-1 text-white">
+                <div class="w-[30px] h-[30px] absolute rounded-full top-10 -right-4 bg-slate-700 p-1 text-white">
                     <Edit class="w-full h-full text-orange stroke-[#fff] cursor-pointer" @click="isAvatar = !isAvatar" />
                 </div>
             </div>
         </div>
-        <div class="w-full my-5 px-5">
+        <div class="w-full px-5">
             <div>
                 <label for="name">Your Name</label>
                 <input type="text" class="w-full p-3 rounded-lg border-2 border-gray-400" v-model="userForm.name" placeholder="JhonDoe" />
@@ -69,7 +69,7 @@ async function register(){
                 <label for="name">Password</label>
                 <input type="password" class="w-full p-3 rounded-lg border-2 border-gray-400" v-model="userForm.password" placeholder="Pa$$w0rd!" />
             </div>
-            <div class="w-full flex items-center justify-center mt-8">
+            <div class="w-full mt-5 flex items-center justify-center">
                 <TextButton @click="register" :styles="`background:${primary}`" icon="line-md:arrow-right" :loading="isLoading" title="Create Account" />
             </div>
         </div>

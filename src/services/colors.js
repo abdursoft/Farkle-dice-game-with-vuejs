@@ -12,6 +12,7 @@ export const success = "#388E3C";
 export const warning = "#FBC02D";
 export const info = "#1976D2";
 export const overlay = "rgba(0, 0, 0, 0.5)";
+export const darkOverlay = "rgba(0, 0, 0, 0.95)";
 export const borderColor = "#E0E0E0";
 export const hoverColor = "#EEEEEE";
 export const disabledColor = "#BDBDBD";

@@ -34,10 +34,10 @@ onBeforeRouteLeave((to,from) => {
 </script>
 
 <template>
-    <div class="w-full h-full flex items-center justify-center absolute top-0 left-0 inset-0 z-99 px-3"
+    <div class="w-full h-screen flex items-center justify-center fixed top-0 left-0 inset-0 z-99 px-3"
         v-if="farkle.openSettings">
         <div
-            class="w-[90vw] rounded-lg border-2 border-orange-600 px-3 h-auto text-center relative text-white" :style="`background: ${primary}`">
+            class="md:max-w-[40vw] w-full max-w-[420px] rounded-lg border-2 border-orange-600 px-3 h-auto text-center relative text-white" :style="`background: ${primary}`">
             <div class="px-7">
                 <h3 class="text-2xl bg-orange-500 lilita rounded-br-md rounded-bl-md" :style="`background: ${primaryLight}`">Settings!</h3>
             </div>
@@ -68,7 +68,6 @@ onBeforeRouteLeave((to,from) => {
                 <TextButton v-if="authStore.authUser?.name" background="bg-red-500" title="Logout" @click="authStore.logout()" />
                 <router-link v-else :to="{ name: 'register' }" class="py-2 px-3 bg-blue-600 rounded-md text-white my-2">Create
                     Account</router-link>
-                <router-link :to="{ name: 'register' }">Already signed up?</router-link>
             </div>
             <div class="px-4 w-full mt-5">
                 <div class="w-full rounded-lg p-2 flex items-center justify-center flex-col bg-gray-800 py-6">

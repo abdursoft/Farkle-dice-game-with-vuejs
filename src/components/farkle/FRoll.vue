@@ -1,8 +1,9 @@
 <template>
-  <div class="w-full max-w-[445px] mx-auto py-5 relative h-[94vh] overflow-hidden text-white" :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`">
+  <div class="w-full max-w-[445px] mx-auto py-5 relative h-full overflow-hidden text-white flex flex-col"
+    :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`">
 
     <!-- score board  -->
-    <div class="w-full flex justify-between">
+    <div class="w-full flex justify-between mt-2 h-[200px]">
       <div class="w-[35%]">
         <UserCard />
       </div>
@@ -12,10 +13,10 @@
     </div>
 
     <!-- Scoring area -->
-    <div class="relative mb-6 rounded-md mt-3 h-[52vh] flex items-center justify-between flex-col">
+    <div class="relative mb-3 rounded-md mt-1 flex-1 flex items-center justify-end gap-2 flex-col">
       <div class="w-full relative">
         <!-- rows (top -> 0, bottom -> 5). We position rows vertically by index -->
-        <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-3 px-2">
+        <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-1 px-2">
           <!-- only render dice that have landed -->
           <template v-if="row.length == 0">
             <div class="flex items-center gap-2">
@@ -43,19 +44,19 @@
           </div>
         </transition>
       </div>
-      
+
       <!-- rolling area sits above bottom-left of container (we place rolls at absolute coords) -->
-        <div class="flex w-full items-center gap-2 px-2 min-h-[55px]" :style="`background: ${tertiary}`">
-          <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
-            'not-clickable': !isDieClickable(dice),
-            'suggested': suggestedIds.has(dice.id)
-          }" :style="getRollingDiceStyle(dice, i)" @click="onDieClick(dice)">
-            <img :src="icon" v-if="iconLoading" alt="" class="w-full h-full">
-            <img v-else :src="`/images/dice${dice.value}.png`" alt="" class="w-full h-full" />
-          </div>
+      <div class="flex w-full items-center gap-2 px-2 min-h-[55px]" :style="`background: ${tertiary}`">
+        <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
+          'not-clickable': !isDieClickable(dice),
+          'suggested': suggestedIds.has(dice.id)
+        }" :style="getRollingDiceStyle(dice, i)" @click="onDieClick(dice)">
+          <img :src="icon" v-if="iconLoading" alt="" class="w-full h-full">
+          <img v-else :src="`/images/dice${dice.value}.png`" alt="" class="w-full h-full" />
         </div>
+      </div>
     </div>
-    <div class="flex items-center justify-center gap-5 mb-4 fade-up px-3">
+    <div class="flex items-center justify-center gap-5 mb-4 fade-up px-3 h-[59px]">
       <button class="px-5 w-full py-3 rounded bg-orange-600 rounded-[18px] text-white cursor-pointer"
         @click="endTurn">Collect</button>
       <button
@@ -75,16 +76,20 @@
 </template>
 
 <script setup>
-import echo from '@/plugins/Echo';
 import { useFarkleStore } from "@/stores/farkleStore";
 import { ref, reactive, computed, onMounted } from "vue";
 import UserCard from "../cards/UserCard.vue";
 import ScoreRule from "../cards/ScoreRule.vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
-import  WinMessage from '../modal/WinMessage.vue'
+import WinMessage from '../modal/WinMessage.vue'
+
+import { getEcho } from "@/plugins/Reverb";
 
 import icon from '../../assets/dice-game.gif'
 import { primary, secondary, tertiary } from "@/services/colors";
+import { onBeforeUnmount } from "vue";
+
+const isOwn = ref(true);
 
 const farkle = useFarkleStore();
 
@@ -121,16 +126,14 @@ const bestSuggestion = ref(null);
 const diceRemaining = ref(6);
 const hotDicePending = ref(false);
 
+const ownScore = ref([]);
+const otherScore = ref([]);
+
 /* ----- Helper utilities ----- */
 const rand1to6 = () => Math.floor(Math.random() * 6) + 1;
 
-function playNewGame(){
-  farkle.restartGame();
-  currentPlayer.value = 0;
-  canRoll.value = true;
-  rollCount.value = 0;
-  turnScore.value = 0;
-  rollDice();
+function playNewGame() {
+  router.push({ name: 'lobby' });
 }
 
 function getDicePlaceholder(num) {
@@ -505,7 +508,7 @@ function endTurn() {
   diceRemaining.value = 6;
   suggestedIds.clear();
   bestSuggestion.value = null;
-  canRoll.value = true;
+  canRoll.value = false;
   hotDicePending.value = false;
   showFarkle.value = false;
 
@@ -514,11 +517,15 @@ function endTurn() {
 
   // robot auto-play if mode set
   if (isRobotTurn()) {
+    canRoll.value = true;
     // robot's turn should run after a short delay
     setTimeout(() => robotPlayTurn(), 650);
   } else {
     // if farkle.autoRoll enabled, roll for next human
-    if (farkle.autoRoll) setTimeout(() => rollDice(), 500);
+    // if (farkle.autoRoll) setTimeout(() => rollDice(), 500);
+    if(farkle.gameMode === 'robot' && currentPlayer.value === 0){
+      canRoll.value = true;
+    }
   }
   iconLoading.value = false;
 }
@@ -596,13 +603,35 @@ function wait(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
 
+let channel = null
+async function getEvents() {
+
+  if (!farkle.roundID) return;
+
+  const echo = getEcho();
+
+  channel = echo.private(`user.turn.${farkle.roundID}`)
+    .listen('TurnEvent', (event) => {
+      canRoll.value = event.next_user_id == farkle.authUser?.id ? true : false;
+      ownScore.value = event.history[farkle.authUser?.id];
+      otherScore.value = event.history[event.next_user_id];
+      farkle.updateScores(event);
+      console.log('TurnEvent received:', event);
+    })
+    .listen('GameWon', (event) => {
+      farkle.updateScores(event);
+      farkle.gameOwn(event.winner_id);
+    });
+
+}
+
 const router = useRouter();
 
 /* ---------- Initialization ---------- */
-onMounted(() => {
+onMounted(async () => {
   // start the game with auto-roll if desired
   if (farkle.autoRoll && !isRobotTurn()) {
-    setTimeout(() => rollDice(), 200);
+    // setTimeout(() => rollDice(), 200);
   } else if (isRobotTurn()) {
     // if starting with robot turn, start robot
     setTimeout(() => robotPlayTurn(), 300);
@@ -611,25 +640,22 @@ onMounted(() => {
   if (farkle.users.length <= 0) {
     router.push({ name: 'lobby' });
   }
+
+  canRoll.value = farkle.users[0]?.id == farkle.authUser?.id ? true : false;
+  isOwn.value = farkle.users[0]?.id == farkle.authUser?.id ? true : false;
+  await getEvents();
 });
 
-onMounted(() => {
-    echo.channel(`game.round.${farkle.roundID.value}`)
-        .listen('ScoreStored', (event) => {
-            console.log('Score stored:', event.score);
-
-            // Update score list
-            scores.value.push(event.score);
-            console.log('Updated scores:', scores.value);
-
-            // Make Roll button visible for other users
-            canRoll.value = true;
-        });
-});
-
-onBeforeRouteLeave((to,from) => {
+onBeforeRouteLeave((to, from) => {
   farkle.endGame();
   return;
+})
+
+onBeforeUnmount(() => {
+  if (channel) {
+    channel.stopListening('TurnEvent')
+    channel.unsubscribe()
+  }
 })
 </script>
 

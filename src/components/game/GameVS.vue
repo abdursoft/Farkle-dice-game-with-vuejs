@@ -1,22 +1,20 @@
 <script setup>
 import WinSVG from '@/assets/icons/win.svg'
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import VS from '@/assets/images/vs.png'
 import Dice5 from '@/assets/icons/white/dice5.svg'
 import Dice2 from '@/assets/icons/white/dice2.svg'
 import Progress from '../partials/Progress.vue';
 import { useFarkleStore } from '@/stores/farkleStore';
-import { computed, onMounted, ref } from 'vue';
-import WinScore from '../modal/WinScore.vue';
-import { useAuthStore } from '@/stores/authStore';
+import { onMounted, ref } from 'vue';
 import { primaryLight } from '@/services/colors';
+import { useAuthStore } from '@/stores/authStore';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
 const isPVP = ref(false);
-const isPlayable = ref(false);
 
 const props = defineProps({
     mode:{
@@ -31,69 +29,49 @@ const props = defineProps({
 
 const farkle = useFarkleStore();
 
-function challengeGame(){
-    if(isPlayable.value){
-        router.push({ name: 'test' })
-    }
-}
-
-async function setGameScore(value){
-    farkle.setWinScore(value);
-    
-    const challenge = await farkle.challengeFriend(authStore.friend?.id, farkle.winScore);
-
-    if(challenge?.status === 201){
-        router.push({name:'test'});
-    }
-}
-
 
 function openGame() {
     farkle.setGameMode(route.params?.type);
     farkle.setAutoRoll(props.roll);
-    farkle.setWinScore(2000)
     if(!isPVP.value){
+        farkle.addUser(authStore.authUser.name,authStore.authUser.id)
         farkle.addUser('Robot', 'robot');
-        challengeGame();
     }
+    router.push({ name: 'test' })
 }
 
-onMounted(async () => {
+onMounted(() => {
     isPVP.value = route.params.type === 'pvp' ? true : false;
-    const friend = await authStore.getFriend(route.params?.playerId);
-    console.log(friend);
-    if(friend.status === 200){
-        isPlayable.value = true;
-        farkle.addUser(authStore.authUser?.name,authStore.authUser?.id,authStore.authUser?.avatar);
-        farkle.addUser(friend.data.friend.name, friend.data.friend.id,friend.data.friend.avatar);
+    if(!isPVP.value){
+        farkle.setWinScore(2000)
     }
-
 });
+
 </script>
 
 <template>
     <!-- game lobby initiate  -->
-    <div class="h-[90vh] w-full max-w-[445px] py-5 flex flex-col items-center justify-center gap-10 relative" :style="`background: ${primaryLight}`">
+    <div class="w-full h-full max-w-[445px] py-5 flex flex-col items-center justify-center gap-5 relative overflow-y-auto" :style="`background: ${primaryLight}`">
         <div class="w-full flex items-center justify-center flex-col relative">
             <div class="w-[80px] h-[80px] rounded-full p-1 text-white  absolute -top-20 z-9">
                 <WinSVG class="w-full h-full z-9" />
             </div>
             <div class="w-80 border-5 rounded-[18px] border-gray-400 relative p-3 -mt-5 bg-[#F6EFDD]">
-                <h3 class="text-xl md:text-3xl lilita text-center text-gray-800">First to reach <br />2500 points win!
+                <h3 class="text-xl md:text-3xl lilita text-center text-gray-800">First to reach <br />{{ farkle.winScore }} points win!
                 </h3>
             </div>
         </div>
-        <div class="container">
+        <div class="container flex-1-auto">
             <!-- players queue  -->
             <div class="w-full mt-5 px-5">
-                <div class="w-full flex items-center justify-between">
+                <div class="w-full flex items-center justify-between px-10">
                     <div class="flex items-center justify-center flex-col gap-2" v-for="(user, index) in farkle.users" :key="index">
-                        <img :src="`/avatar/avatar${user.avatar}.svg`" class="w-[100px] h-[100px] rounded-full border-1 border-gray-200" />
+                        <img :src="`/avatar/avatar${user.avatar}.svg`" class="w-[70px] h-[70px] rounded-full border-1 border-gray-200" />
                         <h2 class="text-xl lilita text-white">{{ index == 0 ? 'You' : user.name?.slice(0,8) }}</h2>
                     </div>
                 </div>
             </div>
-            <div class="w-full flex items-center justify-center mt-15">
+            <div class="w-full flex items-center justify-center mt-7">
                 <div class="flex items-center justify-center flex-col gap-2">
                     <img :src="VS" class="w-[60px] h-[60px] rounded-full border-1 border-gray-200 p-2" />
                 </div>
@@ -109,12 +87,8 @@ onMounted(async () => {
                     </div>
                 </div>
             </div>
-
-            <!-- progress loader  -->
-            <Progress @end-progress="openGame" title="Farkle initializing" />
-
-            <!-- win score setter  -->
-            <WinScore v-if="isPVP" @callbackScore="setGameScore" />
         </div>
+        <!-- progress loader  -->
+        <Progress @end-progress="openGame" title="Farkle initializing" />
     </div>
 </template>

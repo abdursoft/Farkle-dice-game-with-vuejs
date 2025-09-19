@@ -50,7 +50,7 @@ export const useAuthStore = defineStore("authStore", () => {
         authRefToken.value = token;
     }
 
-    async function authCheck() {
+    async function authCheck(isNull=true) {
         try {
             console.log('Checking auth...');
             const response = await apiClient.get(AUTH.CHECK);
@@ -58,11 +58,10 @@ export const useAuthStore = defineStore("authStore", () => {
                 authUser.value = response.data.user;
                 return response;
             }else{
-                console.log('Token expired');
-                await logout();
+                await logout(isNull);
             }
         } catch (error) {
-            return await logout();
+            return await logout(isNull);
         }
     }
 
@@ -85,14 +84,16 @@ export const useAuthStore = defineStore("authStore", () => {
             authToken.value = response.data.token;
             localStorage.setItem("dicToken", response.data.token);
             return response;
-        } catch (error) { }
+        } catch (error) {
+            console.log(error)
+         }
     }
 
-    async function logout() {
+    async function logout(isNull=false) {
         authUser.value = null;
         authToken.value = null;
         localStorage.removeItem("dicToken");
-        router.push({ name: "home" });
+        isNull === true ? router.push({ name: "home" }) : null
     }
 
     return {
