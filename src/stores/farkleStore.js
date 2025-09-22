@@ -34,6 +34,7 @@ export const useFarkleStore = defineStore("farkleStore", () => {
 
     function setGameSound(value){
         gameSound.value = value;
+        localStorage.setItem('diceSound', JSON.stringify(value));
     }
 
     function setAutoRoll(role){
@@ -129,7 +130,9 @@ export const useFarkleStore = defineStore("farkleStore", () => {
             user.score = 0;
             user.turns = []
         });
-        await resetScores();
+        if(gameMode.value == 'pvp'){
+            await resetScores();
+        }
     }
 
         async function challengeFriend(id, score) {
@@ -195,6 +198,11 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         }
     }
 
+    function getSfx(){
+        const sfx = JSON.parse(localStorage.getItem('diceSound') ?? 'false');
+        gameSound.value = sfx;
+    }
+
     return {
         users,
         authUser,
@@ -223,6 +231,7 @@ export const useFarkleStore = defineStore("farkleStore", () => {
         setWinState,
         restartGame,
         endGame,
+        getSfx,
         gameOwn,
         resetUsers,
         getChallenges,

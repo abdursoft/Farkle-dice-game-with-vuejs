@@ -1,10 +1,11 @@
 <script setup>
 import Settings from '@/components/modal/Settings.vue';
+import { getEcho, initEcho } from '@/plugins/Reverb';
 import { primary, secondary, tertiary } from '@/services/colors';
 import { useAuthStore } from '@/stores/authStore';
 import { useFarkleStore } from '@/stores/farkleStore';
 import { Icon } from '@iconify/vue';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -25,6 +26,17 @@ onBeforeMount(async() => {
     router.push({name:'lobby'});
   }
 });
+
+onMounted(() => {
+  const token = localStorage.getItem('dicToken');
+  const echo = getEcho();
+  if(!echo){
+    console.log('Echo not found!');
+    initEcho(token);
+    console.log('Echo successfully initialized')
+  }
+  farkle.getSfx();
+});
 </script>
 
 <template>
@@ -43,7 +55,7 @@ onBeforeMount(async() => {
             class="w-10 h-10 rounded-full border-2 border-white"
           />
           <div class="flex flex-col">
-            <span class="font-bold text-white">{{ authStore.authUser?.name }}</span>
+            <span class="font-bold text-white">{{ authStore.authUser?.name.slice(0,13) }}</span>
             <span class="text-sm">Best {{ authStore.authUser?.highest_score ?? '0' }}</span>
           </div>
         </div>

@@ -44,8 +44,8 @@ async function searchFriends(){
             </div>
             <div class="px-4 w-full mt-5 text-white">
                 <div class="w-full flex items-center justify-between gap-3">
-                    <input type="text" class="flex-1 p-2 rounded-lg border-1 border-gray-400" v-model="user.name" placeholder="Friend name..." />
-                    <Icon icon="iconoir:search" width="44" height="44" class="cursor-pointer p-2 rounded-full hover:bg-gray-800" @click="searchFriends" />
+                    <input type="text" class="flex-1 p-2 rounded-lg border-1 border-gray-400" v-model="user.name" placeholder="Friend name...or....id" />
+                    <Icon icon="iconoir:search" width="44" height="44" class="cursor-pointer p-2 rounded-full bg-gray-800 hover:bg-gray-600" @click="searchFriends" />
                 </div>
                 <div class="mt-5 w-full rounded-md min-h-65 max-h-80 overflow-y-auto relative" :style="`background: ${primaryLight}`">
                     <div class="flex items-center justify-center h-full w-full absolute text-center" v-if="isLoading" >

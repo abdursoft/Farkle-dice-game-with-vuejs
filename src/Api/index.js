@@ -12,7 +12,8 @@ export const AUTH = {
   LOGIN: `${ROOT_URL}auth/login`,
   REFRESH_TOKEN: `${ROOT_URL}auth/refresh-token`,
   CHECK: `${ROOT_URL}auth/check`,
-  DASHBOARD: `${ROOT_URL}auth/dashboard`
+  DASHBOARD: `${ROOT_URL}auth/dashboard`,
+  NAME_CHANGE: `${ROOT_URL}change-name`,
 }
 
 
@@ -37,8 +38,5 @@ export const SCORE = {
 export const GAME = {
   NEW_GAME: `${ROOT_URL}game/round`,
   JOIN_GAME: `${ROOT_URL}game/join`,
-  LIST_GAMES: `${ROOT_URL}game/list`,
-  START_GAME: `${ROOT_URL}game/start`,
-  PLAY_TURN: `${ROOT_URL}game/play-turn`,
-  END_GAME: `${ROOT_URL}game/end`
+  LEADERBOARD: `${ROOT_URL}game-stats`
 }

@@ -5,11 +5,11 @@ import Dice3 from '@/assets/icons/white/dice3.svg';
 import Dice4 from '@/assets/icons/white/dice4.svg';
 import Dice5 from '@/assets/icons/white/dice5.svg';
 import Dice6 from '@/assets/icons/white/dice6.svg';
-import { tertiary } from '@/services/colors';
+import { darkOverlay, tertiary } from '@/services/colors';
 </script>
 
 <template>
-    <div class="w-full flex justify-between gap-2 rounded-md p-1 max-h-[200px] overflow-y-auto" :style="`background: ${tertiary}`">
+    <div class="w-full flex justify-between gap-2 rounded-md p-1 max-h-[200px] overflow-y-auto" :style="`background: ${darkOverlay}`">
         <div class="w-[85px]">
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center">
@@ -75,11 +75,11 @@ import { tertiary } from '@/services/colors';
         <div class="flex-1">
             <div class="w-full px-2">
                 <div class="w-full flex items-center justify-between">
-                <p class="text-[12px] font-semibold text-amber-800">Super Scores</p>
+                <p class="text-[12px] font-semibold text-orange-800">Super Scores</p>
                 <p class="text-amber-500"></p>
             </div>
             <div class="w-full flex items-center justify-between">
-                <p class="text-[11px] text-white">Four of kind</p>
+                <p class="text-[11px] text-white">Four of a kind</p>
                 <p class="text-amber-500">1000</p>
             </div>
             <div class="w-full flex items-center justify-between">

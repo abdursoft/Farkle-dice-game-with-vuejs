@@ -13,7 +13,7 @@
     </div>
 
     <!-- Scoring area -->
-    <div class="relative mb-3 rounded-md mt-1 flex-1 flex items-center justify-end gap-2 flex-col">
+    <div class="relative mb-3 rounded-md mt-1 flex-1 flex items-center justify-end gap-2 flex-col" :style="`background:${overlay}`">
       <div class="w-full relative">
         <!-- rows (top -> 0, bottom -> 5). We position rows vertically by index -->
         <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-1 px-2">
@@ -46,7 +46,7 @@
       </div>
 
       <!-- rolling area sits above bottom-left of container (we place rolls at absolute coords) -->
-      <div class="flex w-full items-center gap-2 px-2 min-h-[55px]" :style="`background: ${tertiary}`">
+      <div class="flex w-full items-center gap-2 px-2 min-h-[55px]" :style="`background: ${darkOverlay}`">
         <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
           'not-clickable': !isDieClickable(dice),
           'suggested': suggestedIds.has(dice.id)
@@ -83,11 +83,14 @@ import ScoreRule from "../cards/ScoreRule.vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import WinMessage from '../modal/WinMessage.vue'
 
+import sfx from '@/assets/sound/dice-roll.mp3';
+
 import { getEcho } from "@/plugins/Reverb";
 
 import icon from '../../assets/dice-game.gif'
-import { primary, secondary, tertiary } from "@/services/colors";
+import { darkOverlay, primary, secondary, tertiary } from "@/services/colors";
 import { onBeforeUnmount } from "vue";
+import { audio, initAudio } from "@/plugins/audio";
 
 const isOwn = ref(true);
 
@@ -133,7 +136,11 @@ const otherScore = ref([]);
 const rand1to6 = () => Math.floor(Math.random() * 6) + 1;
 
 function playNewGame() {
-  router.push({ name: 'lobby' });
+  if(farkle.gameMode == 'robot'){
+    farkle.restartGame();
+  }else{
+    router.push({ name: 'lobby' });
+  }
 }
 
 function getDicePlaceholder(num) {
@@ -319,6 +326,12 @@ function getScoredDiceStyle(dice) {
 
 /* rollDice: creates a new roll of 'toRoll' dice. Manages currentScoringRow decrement between rolls. */
 function rollDice() {
+
+  // play dice rolling sound 
+    if(farkle.gameSound){
+      audio().play();
+    }
+
   // Adjust row on new roll: if hotDicePending, reset row to bottom; else if it's not the first roll decrement row
   if (hotDicePending.value) {
     currentScoringRow.value = 5;
@@ -352,7 +365,7 @@ function rollDice() {
   const endLoader = setTimeout(() => {
     iconLoading.value = false;
     clearInterval(endLoader);
-  }, 400);
+  }, 600);
 
   // compute suggestion and check farkle
   suggestedIds.clear();
@@ -519,7 +532,9 @@ function endTurn() {
   if (isRobotTurn()) {
     canRoll.value = true;
     // robot's turn should run after a short delay
-    setTimeout(() => robotPlayTurn(), 650);
+    if(!farkle.winState){
+      setTimeout(() => robotPlayTurn(), 650);
+    }
   } else {
     // if farkle.autoRoll enabled, roll for next human
     // if (farkle.autoRoll) setTimeout(() => rollDice(), 500);
@@ -644,6 +659,13 @@ onMounted(async () => {
   canRoll.value = farkle.users[0]?.id == farkle.authUser?.id ? true : false;
   isOwn.value = farkle.users[0]?.id == farkle.authUser?.id ? true : false;
   await getEvents();
+
+  // init sfx sound 
+  const sound = audio();
+  if(!sound){
+    initAudio(sfx);
+    farkle.getSfx();
+  }
 });
 
 onBeforeRouteLeave((to, from) => {

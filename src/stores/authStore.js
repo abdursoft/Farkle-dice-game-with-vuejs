@@ -1,4 +1,5 @@
-import { AUTH, FRIENDS } from "@/Api";
+import { AUTH, FRIENDS, GAME } from "@/Api";
+import { initEcho } from "@/plugins/Reverb";
 import apiClient from "@/services/axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
@@ -13,6 +14,7 @@ export const useAuthStore = defineStore("authStore", () => {
     const authRefToken = ref(null);
     const friends = ref(null);
     const friend = ref(null);
+    const leaderboard = ref(null);
 
     async function getFriend(token) {
         try {
@@ -71,6 +73,7 @@ export const useAuthStore = defineStore("authStore", () => {
             authUser.value = response.data.user;
             authToken.value = response.data.token;
             localStorage.setItem("dicToken", response.data.token);
+            initEcho(authToken.value);
             return response;
         } catch (error) {
             return error;
@@ -83,6 +86,7 @@ export const useAuthStore = defineStore("authStore", () => {
             authUser.value = response.data.user;
             authToken.value = response.data.token;
             localStorage.setItem("dicToken", response.data.token);
+            initEcho(authToken.value);
             return response;
         } catch (error) {
             console.log(error)
@@ -96,6 +100,26 @@ export const useAuthStore = defineStore("authStore", () => {
         isNull === true ? router.push({ name: "home" }) : null
     }
 
+    async function getLeaderboard() {
+        try {
+            const stats = await apiClient.get(GAME.LEADERBOARD);
+            leaderboard.value = stats.data;
+            return stats;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async function changeName(name){
+        try {
+            const stats = await apiClient.post(AUTH.NAME_CHANGE,{name:name});
+            await authCheck(false);
+            return stats;
+        } catch (error) {
+            return error;
+        }
+    }
+
     return {
         authUser,
         avatar,
@@ -103,6 +127,8 @@ export const useAuthStore = defineStore("authStore", () => {
         authRefToken,
         friends,
         friend,
+        leaderboard,
+        getLeaderboard,
         getFriend,
         searchFriends,
         setAuthUser,
@@ -113,5 +139,6 @@ export const useAuthStore = defineStore("authStore", () => {
         register,
         login,
         logout,
+        changeName,
     };
 });

@@ -14,14 +14,6 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-import { initEcho } from './plugins/Reverb';
-
-// get token from localStorage (or Pinia if you manage auth state there)
-const token = localStorage.getItem('dicToken')
-
-// initialize echo once
-initEcho(token)
-
 const app = createApp(App)
 
 app.use(createPinia())

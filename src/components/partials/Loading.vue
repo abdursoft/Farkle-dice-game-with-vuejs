@@ -26,6 +26,6 @@ function progress(value){
         <Account v-if="!isProgress" />
 
         <!-- version area  -->
-        <p class="text-sm absolute bottom-3 left-0 w-full text-center text-white">version 1.0.0</p>
+        <p class="text-sm absolute bottom-5 left-0 w-full text-center text-white">version 1.0.0</p>
     </div>
 </template>
