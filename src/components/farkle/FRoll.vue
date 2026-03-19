@@ -1,7 +1,8 @@
 <template>
-  <div class="w-full max-w-[445px] mx-auto py-5 relative h-full overflow-hidden text-white flex flex-col"
-    :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`">
-
+  <div
+    class="w-full max-w-[445px] mx-auto py-5 relative h-full overflow-hidden text-white flex flex-col"
+    :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`"
+  >
     <!-- score board  -->
     <div class="w-full flex justify-between mt-2 h-[200px]">
       <div class="w-[35%]">
@@ -13,24 +14,44 @@
     </div>
 
     <!-- Scoring area -->
-    <div class="relative mb-3 rounded-md mt-1 flex-1 flex items-center justify-end gap-2 flex-col" :style="`background:${overlay}`">
+    <div
+      class="relative mb-3 rounded-md mt-1 flex-1 flex items-center justify-end gap-2 flex-col"
+      :style="`background:${overlay}`"
+    >
       <div class="w-full relative">
         <!-- rows (top -> 0, bottom -> 5). We position rows vertically by index -->
-        <div v-for="(row, rowIndex) in scoringRows" :key="rowIndex" class="relative w-full h-12 mb-1 px-2">
+        <div
+          v-for="(row, rowIndex) in scoringRows"
+          :key="rowIndex"
+          class="relative w-full h-12 mb-1 px-2"
+        >
           <!-- only render dice that have landed -->
           <template v-if="row.length == 0">
             <div class="flex items-center gap-2">
-              <template v-for="(place, pIndex) in getDicePlaceholder(rowIndex)" :key="pIndex">
-                <div class="dice scored">
-
-                </div>
+              <template
+                v-for="(place, pIndex) in getDicePlaceholder(rowIndex)"
+                :key="pIndex"
+              >
+                <div class="dice scored"></div>
               </template>
             </div>
           </template>
           <template v-else>
-            <template v-for="(dice, dIndex) in row" :key="dice.id+'_'+dIndex">
-              <div v-if="dice.landed" class="dice scored" data-aos="fade-up" :style="getScoredDiceStyle(dice)">
-                <img :src="`/images/dice${dice.value}.png`" alt="" class="w-full h-full" />
+            <template
+              v-for="(dice, dIndex) in row"
+              :key="dice.id + '_' + dIndex"
+            >
+              <div
+                v-if="dice.landed"
+                class="dice scored"
+                data-aos="fade-up"
+                :style="getScoredDiceStyle(dice)"
+              >
+                <img
+                  :src="`/images/dice${dice.value}.png`"
+                  alt=""
+                  class="w-full h-full"
+                />
               </div>
             </template>
           </template>
@@ -38,40 +59,76 @@
 
         <!-- farkle overlay -->
         <transition name="fade">
-          <div v-if="showFarkle"
-            class="absolute inset-0 z-99 flex items-center justify-center bg-red-50/80 text-red-700 font-black text-3xl rounded">
+          <div
+            v-if="showFarkle"
+            class="absolute inset-0 z-99 flex items-center justify-center bg-red-50/80 text-red-700 font-black text-3xl rounded"
+          >
             FARKLE!
           </div>
         </transition>
       </div>
 
       <!-- rolling area sits above bottom-left of container (we place rolls at absolute coords) -->
-      <div class="flex w-full items-center gap-2 px-2 min-h-[55px]" :style="`background: ${darkOverlay}`">
-        <div v-for="(dice, i) in rollingDice" :key="dice.id" class="dice rolling" :class="{
-          'not-clickable': !isDieClickable(dice),
-          'suggested': suggestedIds.has(dice.id)
-        }" :style="getRollingDiceStyle(dice, i)" @click="onDieClick(dice)">
-          <img :src="icon" v-if="iconLoading" alt="" class="w-full h-full">
-          <img v-else :src="`/images/dice${dice.value}.png`" alt="" class="w-full h-full" />
+      <div
+        class="flex w-full items-center gap-2 px-2 min-h-[55px]"
+        :style="`background: ${darkOverlay}`"
+      >
+        <div
+          v-for="(dice, i) in rollingDice"
+          :key="dice.id"
+          class="dice rolling"
+          :class="{
+            'not-clickable': !isDieClickable(dice),
+            suggested: suggestedIds.has(dice.id),
+          }"
+          :style="getRollingDiceStyle(dice, i)"
+          @click="onDieClick(dice)"
+        >
+          <img :src="icon" v-if="iconLoading" alt="" class="w-full h-full" />
+          <img
+            v-else
+            :src="`/images/dice${dice.value}.png`"
+            alt=""
+            class="w-full h-full"
+          />
         </div>
       </div>
     </div>
-    <div class="flex items-center justify-center gap-5 mb-4 fade-up px-3 h-[59px]">
-      <button class="px-5 w-full py-3 rounded bg-orange-600 rounded-[18px] text-white cursor-pointer"
-        @click="endTurn">Collect</button>
+    <div
+      class="flex items-center justify-center gap-5 mb-4 fade-up px-3 h-[59px]"
+    >
+      <button
+        class="px-5 w-full py-3 rounded bg-orange-600 rounded-[18px] text-white cursor-pointer"
+        @click="endTurn"
+      >
+        Collect
+      </button>
       <button
         class="px-5 cursor-pointer w-full py-3 rounded-[18px] bg-blue-800 text-white disabled:cursor-none disabled:opacity-50"
-        :disabled="!canRoll || (farkle.gameMode === 'robot' && currentPlayer === 1)" @click="rollDice">
+        :disabled="
+          !canRoll || (farkle.gameMode === 'robot' && currentPlayer === 1)
+        "
+        @click="rollDice"
+      >
         Roll Dice
       </button>
     </div>
 
-
-    <div class="flex items-center justify-between px-2 absolute top-0 left-0 w-full">
-      <div>Turn Score: <strong>{{ turnScore }}</strong></div>
-      <div>Win Score: <strong>{{ farkle.winScore }}</strong></div>
+    <div
+      class="flex items-center justify-between px-2 absolute top-0 left-0 w-full"
+    >
+      <div>
+        Turn Score: <strong>{{ turnScore }}</strong>
+      </div>
+      <div>
+        Win Score: <strong>{{ farkle.winScore }}</strong>
+      </div>
     </div>
-    <WinMessage :is-win="farkle.winState" :win-message="farkle.winMessage" @resetGame="playNewGame" />
+    <WinMessage
+      :is-win="farkle.winState"
+      :win-message="farkle.winMessage"
+      @resetGame="playNewGame"
+    />
   </div>
 </template>
 
@@ -81,13 +138,13 @@ import { ref, reactive, computed, onMounted } from "vue";
 import UserCard from "../cards/UserCard.vue";
 import ScoreRule from "../cards/ScoreRule.vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
-import WinMessage from '../modal/WinMessage.vue'
+import WinMessage from "../modal/WinMessage.vue";
 
-import sfx from '@/assets/sound/dice-roll.mp3';
+import sfx from "@/assets/sound/dice-roll.mp3";
 
 import { getEcho } from "@/plugins/Reverb";
 
-import icon from '../../assets/dice-game.gif'
+import icon from "../../assets/dice-game.gif";
 import { darkOverlay, primary, secondary, tertiary } from "@/services/colors";
 import { onBeforeUnmount } from "vue";
 import { audio, initAudio } from "@/plugins/audio";
@@ -136,10 +193,10 @@ const otherScore = ref([]);
 const rand1to6 = () => Math.floor(Math.random() * 6) + 1;
 
 function playNewGame() {
-  if(farkle.gameMode == 'robot'){
+  if (farkle.gameMode == "robot") {
     farkle.restartGame();
-  }else{
-    router.push({ name: 'lobby' });
+  } else {
+    router.push({ name: "lobby" });
   }
 }
 
@@ -161,72 +218,75 @@ function getRollPlaceholder(num) {
 
 /* Full Farkle scoring for a chosen subset */
 function faceCounts(values) {
-  const counts = {}
+  const counts = {};
   for (const v of values) {
-    counts[v] = (counts[v] || 0) + 1
+    counts[v] = (counts[v] || 0) + 1;
   }
-  return counts
+  return counts;
 }
 
 function calculateScore(valuesInput) {
   // valuesInput can be array of dice objects or numbers
   const values = valuesInput.map
-    ? valuesInput.map(v => (typeof v === 'number' ? v : v.value))
-    : []
-  const n = values.length
-  if (n === 0) return 0
-  const counts = faceCounts(values)
+    ? valuesInput.map((v) => (typeof v === "number" ? v : v.value))
+    : [];
+  const n = values.length;
+  if (n === 0) return 0;
+  const counts = faceCounts(values);
 
   // specials that require all 6 dice
   if (n === 6) {
-    const isStraight = [1, 2, 3, 4, 5, 6].every(v => counts[v] === 1)
-    const threePairs = Object.values(counts).filter(c => c === 2).length === 3
-    const twoTrips = Object.values(counts).filter(c => c === 3).length === 2
-    const hasFour = Object.values(counts).includes(4)
-    const hasPair = Object.values(counts).includes(2)
+    const isStraight = [1, 2, 3, 4, 5, 6].every((v) => counts[v] === 1);
+    const threePairs =
+      Object.values(counts).filter((c) => c === 2).length === 3;
+    const twoTrips = Object.values(counts).filter((c) => c === 3).length === 2;
+    const hasFour = Object.values(counts).includes(4);
+    const hasPair = Object.values(counts).includes(2);
 
-    if (twoTrips) return 2500
-    if (isStraight) return 1500
-    if (threePairs) return 1500
-    if (hasFour && hasPair) return 1500
+    if (twoTrips) return 2500;
+    if (isStraight) return 1500;
+    if (threePairs) return 1500;
+    if (hasFour && hasPair) return 1500;
   }
 
   // fixed scores for big multiples
-  if (Object.values(counts).includes(6)) return 3000
-  if (Object.values(counts).includes(5)) return 2000
-  if (Object.values(counts).includes(4)) return 1000
+  if (Object.values(counts).includes(6)) return 3000;
+  if (Object.values(counts).includes(5)) return 2000;
+  if (Object.values(counts).includes(4)) return 1000;
 
-  let score = 0
+  let score = 0;
 
   // triples
   for (let f = 1; f <= 6; f++) {
-    const c = counts[f] || 0
+    const c = counts[f] || 0;
     if (c >= 3) {
-      if (f === 1) score += 1000
-      else score += f * 100
-      counts[f] -= 3 // consume
+      if (f === 1) score += 1000;
+      else score += f * 100;
+      counts[f] -= 3; // consume
     }
   }
 
   // leftover singles (1s and 5s only)
-  score += (counts[1] || 0) * 100
-  score += (counts[5] || 0) * 50
+  score += (counts[1] || 0) * 100;
+  score += (counts[5] || 0) * 50;
 
-  return score
+  return score;
 }
-
 
 /* Check if a subset is fully-scoring (you shouldn't leave non-scoring dice inside subset) */
 function isFullyScoring(valuesInput) {
-  const values = valuesInput.map ? valuesInput.map(v => (typeof v === 'number' ? v : v.value)) : [];
+  const values = valuesInput.map
+    ? valuesInput.map((v) => (typeof v === "number" ? v : v.value))
+    : [];
   const n = values.length;
   if (n === 0) return false;
   const counts = faceCounts(values);
 
   if (n === 6) {
-    const isStraight = [1, 2, 3, 4, 5, 6].every(v => counts[v] === 1);
-    const threePairs = Object.values(counts).filter(c => c === 2).length === 3;
-    const twoTrips = Object.values(counts).filter(c => c === 3).length === 2;
+    const isStraight = [1, 2, 3, 4, 5, 6].every((v) => counts[v] === 1);
+    const threePairs =
+      Object.values(counts).filter((c) => c === 2).length === 3;
+    const twoTrips = Object.values(counts).filter((c) => c === 3).length === 2;
     if (isStraight || threePairs || twoTrips) return true;
   }
 
@@ -245,16 +305,17 @@ function isFullyScoring(valuesInput) {
 /* any scoring combination available in diceList? */
 function hasAnyScoringCombination(diceList) {
   if (!diceList || diceList.length === 0) return false;
-  const values = diceList.map(d => d.value);
+  const values = diceList.map((d) => d.value);
   const counts = faceCounts(values);
 
   if (values.includes(1) || values.includes(5)) return true;
-  if (Object.values(counts).some(c => c >= 3)) return true;
+  if (Object.values(counts).some((c) => c >= 3)) return true;
 
   if (diceList.length === 6) {
-    const isStraight = [1, 2, 3, 4, 5, 6].every(v => counts[v] === 1);
-    const threePairs = Object.values(counts).filter(c => c === 2).length === 3;
-    const twoTrips = Object.values(counts).filter(c => c === 3).length === 2;
+    const isStraight = [1, 2, 3, 4, 5, 6].every((v) => counts[v] === 1);
+    const threePairs =
+      Object.values(counts).filter((c) => c === 2).length === 3;
+    const twoTrips = Object.values(counts).filter((c) => c === 3).length === 2;
     if (isStraight || threePairs || twoTrips) return true;
   }
   return false;
@@ -267,7 +328,7 @@ function computeBestSuggestion(diceList) {
   let best = null;
   const arr = diceList.slice();
   // iterate all non-empty subsets up to 2^n - 1 (n <= 6 -> 63)
-  for (let mask = 1; mask < (1 << n); mask++) {
+  for (let mask = 1; mask < 1 << n; mask++) {
     const chosen = [];
     const chosenValues = [];
     for (let i = 0; i < n; i++) {
@@ -279,9 +340,13 @@ function computeBestSuggestion(diceList) {
     if (!isFullyScoring(chosenValues)) continue;
     const sc = calculateScore(chosenValues);
     if (sc <= 0) continue;
-    if (!best || sc > best.score || (sc === best.score && chosen.length < best.values.length)) {
+    if (
+      !best ||
+      sc > best.score ||
+      (sc === best.score && chosen.length < best.values.length)
+    ) {
       best = {
-        ids: new Set(chosen.map(d => d.id)),
+        ids: new Set(chosen.map((d) => d.id)),
         score: sc,
         values: chosenValues.slice(),
       };
@@ -293,12 +358,12 @@ function computeBestSuggestion(diceList) {
 /* detect 6-dice special combination in current roll: two trips / straight / three pairs */
 function detectSixDiceSpecial(diceList) {
   if (diceList.length !== 6) return null;
-  const counts = faceCounts(diceList.map(d => d.value));
-  const twoTrips = Object.values(counts).filter(c => c === 3).length === 2;
-  const isStraight = [1, 2, 3, 4, 5, 6].every(v => counts[v] === 1);
-  const threePairs = Object.values(counts).filter(c => c === 2).length === 3;
+  const counts = faceCounts(diceList.map((d) => d.value));
+  const twoTrips = Object.values(counts).filter((c) => c === 3).length === 2;
+  const isStraight = [1, 2, 3, 4, 5, 6].every((v) => counts[v] === 1);
+  const threePairs = Object.values(counts).filter((c) => c === 2).length === 3;
   if (twoTrips || isStraight || threePairs) {
-    return new Set(diceList.map(d => d.id));
+    return new Set(diceList.map((d) => d.id));
   }
   return null;
 }
@@ -307,8 +372,18 @@ function detectSixDiceSpecial(diceList) {
 function getRollingDiceStyle(dice, index) {
   // rolling dice are positioned relative to bottom-left area; if they have targetX/targetY defined (committing),
   // the rolling element will animate toward the target to show the flight.
-  const x = (dice.targetX != null && dice.flying) ? dice.targetX : (dice.x != null ? dice.x : index * SLOT);
-  const y = (dice.targetY != null && dice.flying) ? dice.targetY : (dice.y != null ? dice.y : 0);
+  const x =
+    dice.targetX != null && dice.flying
+      ? dice.targetX
+      : dice.x != null
+        ? dice.x
+        : index * SLOT;
+  const y =
+    dice.targetY != null && dice.flying
+      ? dice.targetY
+      : dice.y != null
+        ? dice.y
+        : 0;
 }
 
 function getScoredDiceStyle(dice) {
@@ -317,8 +392,8 @@ function getScoredDiceStyle(dice) {
   return {
     transform: `translateY(${y}px)`,
     transform: `translateX(${x}px)`,
-    transition: 'transform 0.6s ease-out',
-    position: 'absolute',
+    transition: "transform 0.6s ease-out",
+    position: "absolute",
   };
 }
 
@@ -326,11 +401,10 @@ function getScoredDiceStyle(dice) {
 
 /* rollDice: creates a new roll of 'toRoll' dice. Manages currentScoringRow decrement between rolls. */
 function rollDice() {
-
-  // play dice rolling sound 
-    if(farkle.gameSound){
-      audio().play();
-    }
+  // play dice rolling sound
+  if (farkle.gameSound) {
+    audio().play();
+  }
 
   // Adjust row on new roll: if hotDicePending, reset row to bottom; else if it's not the first roll decrement row
   if (hotDicePending.value) {
@@ -339,7 +413,6 @@ function rollDice() {
   } else if (rollCount.value > 0) {
     currentScoringRow.value = Math.max(0, currentScoringRow.value - 1);
   }
-
 
   iconLoading.value = true;
 
@@ -387,7 +460,6 @@ function rollDice() {
   }
 }
 
-
 /* Commit a group of dice (array of dice objects) to the current scoring row.
    Returns a Promise that resolves after animation and removal is complete. */
 function commitGroup(group) {
@@ -404,7 +476,7 @@ function commitGroup(group) {
   });
 
   // add score right away to turnScore (preview/commit semantics assumed)
-  const gained = calculateScore(group.map(d => d.value));
+  const gained = calculateScore(group.map((d) => d.value));
   turnScore.value += gained;
 
   // update diceRemaining
@@ -414,7 +486,7 @@ function commitGroup(group) {
   return new Promise((resolve) => {
     setTimeout(() => {
       for (const d of group) {
-        const idx = rollingDice.findIndex(r => r.id === d.id);
+        const idx = rollingDice.findIndex((r) => r.id === d.id);
         if (idx >= 0) rollingDice.splice(idx, 1);
         d.flying = false;
         d.landed = true; // now show in scoringRows
@@ -448,7 +520,7 @@ function commitGroup(group) {
 
 /* Check if it's robot's turn */
 function isRobotTurn() {
-  return farkle.gameMode === 'robot' && currentPlayer.value === 1;
+  return farkle.gameMode === "robot" && currentPlayer.value === 1;
 }
 
 /* When the user clicks a die (or robot does), commit appropriate group:
@@ -467,7 +539,7 @@ async function onDieClick(die) {
   }
 
   // check same-face multiples
-  const same = rollingDice.filter(d => d.value === die.value);
+  const same = rollingDice.filter((d) => d.value === die.value);
   if (same.length >= 3) {
     await commitGroup(same);
     return;
@@ -487,7 +559,7 @@ function isDieClickable(die) {
   if (special) return special.has(die.id);
 
   // if there are 3+ of same face, those dice clickable
-  const same = rollingDice.filter(d => d.value === die.value);
+  const same = rollingDice.filter((d) => d.value === die.value);
   if (same.length >= 3) return true;
 
   // else single 1 or 5
@@ -498,7 +570,7 @@ function isDieClickable(die) {
 async function takeSuggestion() {
   if (!bestSuggestion.value) return;
   const ids = bestSuggestion.value.ids;
-  const group = rollingDice.filter(d => ids.has(d.id));
+  const group = rollingDice.filter((d) => ids.has(d.id));
   if (group.length) {
     await commitGroup(group);
   }
@@ -507,7 +579,7 @@ async function takeSuggestion() {
 /* End turn: bank points to current player, reset for next player, handle robot flow */
 function endTurn() {
   // bank points to player
-  farkle.setScore(currentPlayer.value, turnScore.value)
+  farkle.setScore(currentPlayer.value, turnScore.value);
 
   iconLoading.value = true;
 
@@ -532,13 +604,13 @@ function endTurn() {
   if (isRobotTurn()) {
     canRoll.value = true;
     // robot's turn should run after a short delay
-    if(!farkle.winState){
+    if (!farkle.winState) {
       setTimeout(() => robotPlayTurn(), 650);
     }
   } else {
     // if farkle.autoRoll enabled, roll for next human
     // if (farkle.autoRoll) setTimeout(() => rollDice(), 500);
-    if(farkle.gameMode === 'robot' && currentPlayer.value === 0){
+    if (farkle.gameMode === "robot" && currentPlayer.value === 0) {
       canRoll.value = true;
     }
   }
@@ -577,7 +649,7 @@ async function robotPlayTurn() {
   }
 
   // commit the best suggestion
-  const group = rollingDice.filter(d => best.ids.has(d.id));
+  const group = rollingDice.filter((d) => best.ids.has(d.id));
   if (group.length) {
     await commitGroup(group);
   }
@@ -615,29 +687,28 @@ async function robotPlayTurn() {
 
 /* small helper to pause */
 function wait(ms) {
-  return new Promise(res => setTimeout(res, ms));
+  return new Promise((res) => setTimeout(res, ms));
 }
 
-let channel = null
+let channel = null;
 async function getEvents() {
-
   if (!farkle.roundID) return;
 
   const echo = getEcho();
 
-  channel = echo.private(`user.turn.${farkle.roundID}`)
-    .listen('TurnEvent', (event) => {
+  channel = echo
+    .private(`user.turn.${farkle.roundID}`)
+    .listen("TurnEvent", (event) => {
       canRoll.value = event.next_user_id == farkle.authUser?.id ? true : false;
       ownScore.value = event.history[farkle.authUser?.id];
       otherScore.value = event.history[event.next_user_id];
       farkle.updateScores(event);
-      console.log('TurnEvent received:', event);
+      console.log("TurnEvent received:", event);
     })
-    .listen('GameWon', (event) => {
+    .listen("GameWon", (event) => {
       farkle.updateScores(event);
       farkle.gameOwn(event.winner_id);
     });
-
 }
 
 const router = useRouter();
@@ -653,16 +724,16 @@ onMounted(async () => {
   }
 
   if (farkle.users.length <= 0) {
-    router.push({ name: 'lobby' });
+    router.push({ name: "lobby" });
   }
 
   canRoll.value = farkle.users[0]?.id == farkle.authUser?.id ? true : false;
   isOwn.value = farkle.users[0]?.id == farkle.authUser?.id ? true : false;
   await getEvents();
 
-  // init sfx sound 
+  // init sfx sound
   const sound = audio();
-  if(!sound){
+  if (!sound) {
     initAudio(sfx);
     farkle.getSfx();
   }
@@ -671,14 +742,14 @@ onMounted(async () => {
 onBeforeRouteLeave((to, from) => {
   farkle.endGame();
   return;
-})
+});
 
 onBeforeUnmount(() => {
   if (channel) {
-    channel.stopListening('TurnEvent')
-    channel.unsubscribe()
+    channel.stopListening("TurnEvent");
+    channel.unsubscribe();
   }
-})
+});
 </script>
 
 <style scoped>
@@ -711,9 +782,10 @@ onBeforeUnmount(() => {
   background: transparent;
 }
 
-
 .dice.rolling.suggested {
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12), 0 8px 20px rgba(59, 130, 246, 0.18);
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.12),
+    0 8px 20px rgba(59, 130, 246, 0.18);
 }
 
 .dice.rolling.not-clickable {

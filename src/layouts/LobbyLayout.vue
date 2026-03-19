@@ -5,12 +5,13 @@ import { primary, secondary, tertiary } from '@/services/colors';
 import { useAuthStore } from '@/stores/authStore';
 import { useFarkleStore } from '@/stores/farkleStore';
 import { Icon } from '@iconify/vue';
-import { onBeforeMount, onMounted } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const farkle = useFarkleStore();
 const authStore = useAuthStore();
+const isAuth = ref(false)
 
 function goBack() {
   window.history.back();
@@ -23,6 +24,7 @@ function openRoute(name) {
 onBeforeMount(async() => {
   const auth = await authStore.authCheck();
   if(auth?.status === 200){
+    isAuth.value = true;
     router.push({name:'lobby'});
   }
 });
@@ -101,6 +103,7 @@ onMounted(() => {
             width="34"
             height="34"
             class="text-gray-400 cursor-pointer hover:text-white transition"
+            @click="openRoute('credit')"
           />
         </button>
         <button>
@@ -108,6 +111,7 @@ onMounted(() => {
             icon="ion:dice-sharp"
             width="34"
             height="34"
+            @click="openRoute('reffer')"
             class="text-gray-400 cursor-pointer hover:text-white transition"
           />
         </button>
@@ -141,5 +145,9 @@ onMounted(() => {
       </div>
     </div>
 
+    <!-- Auth checking -->
+    <div class="h-full w-full absolute flex items-center justify-center text-white font-bold bg-slate-900" v-show="!isAuth">
+      <h2>Auth Checking ....</h2>
+    </div>
   </div>
 </template>

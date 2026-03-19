@@ -63,7 +63,7 @@ onBeforeRouteLeave((to,from) => {
     <div class="w-full h-screen flex items-center justify-center fixed top-0 left-0 inset-0 z-99 px-3"
         v-if="farkle.openSettings">
         <div
-            class="md:max-w-[40vw] w-full max-w-[420px] rounded-lg border-2 border-orange-600 px-3 h-auto text-center relative text-white" :style="`background: ${primary}`">
+            class="w-full max-w-[420px] rounded-lg border-2 border-orange-600/20 shadow-md px-3 h-auto text-center relative text-white" :style="`background: ${primary}`">
             <div class="px-7">
                 <h3 class="text-2xl bg-orange-500 lilita rounded-br-md rounded-bl-md" :style="`background: ${primaryLight}`">Settings!</h3>
             </div>
@@ -75,8 +75,8 @@ onBeforeRouteLeave((to,from) => {
                     <input v-model="user.name" v-if="isEdit" type="text" class="w-full rounded-lg border-2 border-gray-400 transition delay-300" placeholder="JhonDoe" />
                     <p v-else class="text-white text-center">{{ authStore.authUser?.name }}</p>
 
-                    <Icon v-if="!isEdit" icon="mynaui:edit-one" width="24" height="24" @click="isEdit = !isEdit" />
-                    <Icon v-else @click="changeProfileName" icon="prime:check-square" width="24" height="24" />
+                    <Icon v-if="!isEdit" icon="mynaui:edit-one" width="24" height="24" class="hover:cursor-pointer" @click="isEdit = !isEdit" />
+                    <Icon v-else @click="changeProfileName" icon="prime:check-square" class="hover:cursor-pointer" width="24" height="24" />
                 </div>
             </div>
             <!-- sound section  -->
@@ -107,8 +107,8 @@ onBeforeRouteLeave((to,from) => {
                 </div>
             </div>
             <div class="text-center w-full mt-5 flex items-center justify-between gap-1 px-4">
-                <p>Player ID: #9E5B2B</p>
-                <p>App v1.0.0</p>
+                <p class="text-sm">Player ID: #<span class="font-bold">{{ authStore.authUser?.token }}</span></p>
+                <p class="text-sm">App v1.0.0</p>
             </div>
             <Icon icon="system-uicons:cross-circle" width="28" height="28" class="absolute top-1 right-1 cursor-pointer"
                 @click="toggleSettings" />

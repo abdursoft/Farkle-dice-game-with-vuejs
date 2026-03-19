@@ -59,6 +59,18 @@ const routes = [
         component: () => import("../views/History.vue"),
         meta: { title: "Create your FARKLE account" },
       },
+      {
+        name: "credit",
+        path: "/credit",
+        component: () => import("../views/partials/Credit.vue"),
+        meta: { title: "Account Credit" },
+      },
+      {
+        name: "reffer",
+        path: "/reffer",
+        component: () => import("../views/partials/Reffer.vue"),
+        meta: { title: "Reffer a friend" },
+      },
     ],
   },
   {

@@ -1,7 +1,6 @@
-import install from '@/install'
 import axios from 'axios'
 
-const { host } = install
+const host = import.meta.env.VITE_API_HOST;
 
 const apiClient = axios.create({
   baseURL: `${host.replace(/\/+$/, '')}/`,

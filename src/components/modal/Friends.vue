@@ -38,13 +38,13 @@ async function searchFriends(){
 <template>
     <div class="w-full h-screen flex items-center justify-center fixed top-0 left-0 inset-0 z-[99] px-3"
         v-if="farkle.openFriends">
-        <div class="md:max-w-[40vw] w-full max-w-[420px] rounded-lg border-2 border-orange-600 px-3 h-auto text-center relative" :style="`background: ${primary}`">
+        <div class="w-full max-w-[420px] rounded-lg border-2 border-orange-600/20 shadow-lg px-3 h-auto text-center relative" :style="`background: ${primary}`">
             <div class="px-7">
                 <h3 class="text-2xl text-white lilita rounded-br-md rounded-bl-md" :style="`background:${tertiary}`">Friends!</h3>
             </div>
             <div class="px-4 w-full mt-5 text-white">
                 <div class="w-full flex items-center justify-between gap-3">
-                    <input type="text" class="flex-1 p-2 rounded-lg border-1 border-gray-400" v-model="user.name" placeholder="Friend name...or....id" />
+                    <input type="text" class="flex-1 p-2 rounded-lg border-1 border-gray-800 focus:outline-1" v-model="user.name" placeholder="Friend name...or....id" />
                     <Icon icon="iconoir:search" width="44" height="44" class="cursor-pointer p-2 rounded-full bg-gray-800 hover:bg-gray-600" @click="searchFriends" />
                 </div>
                 <div class="mt-5 w-full rounded-md min-h-65 max-h-80 overflow-y-auto relative" :style="`background: ${primaryLight}`">
@@ -54,7 +54,7 @@ async function searchFriends(){
                     <template v-else>
                         <div v-for="(friend, index) of authStore.friends" :key="index" class="w-full flex items-center justify-between p-2 border-b-2 border-gray-300">
                             <div class="flex items-center gap-2 flex-1">
-                                <img :src="`/avatar/avatar${index+1}.svg`" alt="avatar" class="w-10 h-10 rounded-full border-2 border-white" />
+                                <img :src="`/avatar/avatar${friend?.avatar}.svg`" alt="avatar" class="w-10 h-10 rounded-full border-2 border-white" />
                                 <div class="flex flex-col items-start gap-1">
                                     <p class="font-bold text-white line-clamp-1 text-left">{{ friend.name.slice(0,10) }}</p> 
                                     <small class="text-sm text-white text-[13px]">#{{ friend.token }}</small>
@@ -66,8 +66,8 @@ async function searchFriends(){
                 </div>
             </div>
             <div class="text-center w-full mt-5 flex items-center justify-between gap-1 px-4 text-white">
-                <p>Player ID: #{{ authStore.authUser?.token }}</p>
-                <p>App v1.0.0</p>
+                <p class="text-sm">Player ID: #<span class="font-bold">{{ authStore.authUser?.token }}</span></p>
+                <p class="text-sm">App v1.0.0</p>
             </div>
             <Icon icon="system-uicons:cross-circle" width="28" height="28" class="absolute top-1 right-1 cursor-pointer text-white"
                 @click="toggleFriends" />

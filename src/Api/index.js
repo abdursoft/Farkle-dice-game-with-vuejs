@@ -1,7 +1,5 @@
-import install from '@/install'
-
 // import host
-const { host } = install
+const host = import.meta.env.VITE_API_HOST;
 
 // base route
 export const ROOT_URL = `${host}api/v1/`

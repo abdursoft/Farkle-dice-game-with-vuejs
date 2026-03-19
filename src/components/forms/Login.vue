@@ -26,13 +26,14 @@ const isAvatar = ref(false);
 async function login(){
     isLoading.value = true;
     const res = await authStore.login(userForm);
-    if(res.status === 200){
+    if(res?.status === 200){
         tost.success(res.data?.message, {
             position: 'top-right'
         });   
         router.push({name:"lobby"});
     }else{
-        tost.error(res.response?.data.message, {
+        console.log(res);
+        tost.error(res?.data.message, {
             position: 'top-right'
         });
     }
