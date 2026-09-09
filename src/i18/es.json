@@ -1,0 +1,97 @@
+{
+    "play": "Iniciar juego",
+    "play_now": "Jugar ahora",
+    "play_with_friends": "Jugar con amigos",
+    "play_with_robot": "Jugar con robot",
+    "join_game": "Unirse al juego",
+
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "register": "Registrarse",
+    "register_now": "Regístrate ahora",
+    "create_account": "Crear cuenta",
+    "already_have_account": "¿Ya tienes una cuenta?",
+    "dont_have_account": "¿No tienes una cuenta?",
+    "already_registered": "¿Ya estás registrado?",
+    "login_here": "Inicia sesión aquí",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "profile": "Perfil",
+    "view_profile": "Ver perfil",
+    "edit_profile": "Editar perfil",
+    "settings": "Configuración",
+
+    "leaderboard": "Clasificación",
+    "rank": "Rango",
+    "wins": "Victorias",
+    "losses": "Derrotas",
+    "draws": "Empates",
+    "total": "Puntuación total",
+    "credits": "Créditos",
+
+    "welcome": "Bienvenido",
+    "welcome_back": "¡Bienvenido de nuevo!",
+    "welcome_message": "¡Bienvenido a Farkle! Un divertido juego de dados de suerte y estrategia.",
+
+    "roll_dice": "Lanzar dados",
+    "your_turn": "Tu turno",
+    "opponent_turn": "Turno del oponente",
+    "score": "Puntuación",
+    "turn_score": "Puntuación del turno",
+    "bank_score": "Guardar puntos",
+    "farkle": "¡Farkle! Sin puntos",
+    "game_over": "Juego terminado",
+    "you_win": "¡Ganaste!",
+    "you_lose": "Perdiste",
+    "draw_game": "Empate",
+
+    "search": "Buscar",
+    "notifications": "Notificaciones",
+    "messages": "Mensajes",
+
+    "contact": "Contacto",
+    "contact_us": "Contáctanos",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "message": "Mensaje",
+    "send": "Enviar",
+    "password": "Contraseña",
+
+    "language": "Idioma",
+    "english": "Inglés",
+    "bengali": "Bengalí",
+    "hindi": "Hindi",
+    "spanish": "Español",
+
+    "submit": "Enviar",
+    "loading": "Cargando...",
+    "no_data": "No se encontraron datos",
+
+    "success": "Éxito",
+    "error": "Error",
+    "success_message": "¡Acción completada con éxito!",
+    "error_message": "Algo salió mal. Inténtalo de nuevo.",
+
+    "invalid_credentials": "Usuario o contraseña inválidos",
+    "account_created": "Cuenta creada. Inicia sesión.",
+    "account_deleted": "Cuenta eliminada",
+    "password_updated": "Contraseña actualizada",
+    "profile_updated": "Perfil actualizado",
+
+    "change_password": "Cambiar contraseña",
+    "current_password": "Contraseña actual",
+    "new_password": "Nueva contraseña",
+    "confirm_password": "Confirmar contraseña",
+
+    "delete_account": "Eliminar cuenta",
+    "delete_confirmation": "¿Estás seguro? Esta acción no se puede deshacer.",
+    "yes": "Sí",
+    "no": "No", 
+
+    "player_id": "ID del jugador",
+    "player_name": "Nombre del jugador",
+
+    "version": "Versión"
+}

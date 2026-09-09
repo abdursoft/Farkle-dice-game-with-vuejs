@@ -6,29 +6,29 @@
             <div class="ml-4">
                 <h2 class="font-bold text-lg">{{ authStore.authUser?.name }}</h2>
                 <div class="flex gap-4 text-sm">
-                    <span>LEVEL: {{ level }}</span>
-                    <span>COLLECTION: {{ collection }}</span>
+                    <span>{{ $t('level') }}: {{ level }}</span>
+                    <span>{{ $t('collection') }}: {{ collection }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Games Played -->
-        <h3 class="text-center font-bold mb-2">GAMES PLAYED</h3>
+        <h3 class="text-center font-bold mb-2">{{ $t('games_played') }}</h3>
         <div class="flex justify-center mb-6">
             <canvas id="gamesChart" ref="gamesChart" class="w-[100px] h-[100px]"></canvas>
         </div>
         <div class="flex justify-between mb-4">
-            <span class="text-blue-500 lilita">Games Won: {{ gamesWon }}</span>
-            <span class="text-red-500 lilita">Games Lost: {{ gamesLost }}</span>
+            <span class="text-blue-500 lilita">{{ $t('you_win') }}: {{ gamesWon }}</span>
+            <span class="text-red-500 lilita">{{ $t('you_lose') }}: {{ gamesLost }}</span>
         </div>
 
         <!-- Scores -->
         <div class="text-sm">
             <div class="flex justify-between">
-                <span>Highest Score</span> <span>{{ highestScore }}</span>
+                <span>{{ $t('highest_score') }}</span> <span>{{ highestScore }}</span>
             </div>
             <div class="flex justify-between">
-                <span>Average Score</span> <span>{{ averageScore }}</span>
+                <span>{{ $t('average_score') }}</span> <span>{{ averageScore }}</span>
             </div>
         </div>
 

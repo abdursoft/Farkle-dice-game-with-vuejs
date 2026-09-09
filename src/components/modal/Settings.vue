@@ -65,7 +65,7 @@ onBeforeRouteLeave((to,from) => {
         <div
             class="w-full max-w-[420px] rounded-lg border-2 border-orange-600/20 shadow-md px-3 h-auto text-center relative text-white" :style="`background: ${primary}`">
             <div class="px-7">
-                <h3 class="text-2xl bg-orange-500 lilita rounded-br-md rounded-bl-md" :style="`background: ${primaryLight}`">Settings!</h3>
+                <h3 class="text-2xl bg-orange-500 lilita rounded-br-md rounded-bl-md" :style="`background: ${primaryLight}`">{{ $t('settings') }}!</h3>
             </div>
             <!-- avatar section  -->
             <div class="px-2 w-full flex items-center mt-2">
@@ -86,29 +86,27 @@ onBeforeRouteLeave((to,from) => {
             </div>
             <!-- support & language section  -->
             <div class="w-full px-4 flex items-center justify-around mt-5 gap-3">
-                <button class="p-2 rounded-md text-white cursor-pointer w-full" :style="`background: ${primaryLight}`">Language</button>
-                <button class="p-2 rounded-md text-white cursor-pointer w-full" :style="`background: ${primaryLight}`">Support</button>
+                <button class="p-2 rounded-md text-white cursor-pointer w-full" :style="`background: ${primaryLight}`">{{ $t('language') }}</button>
+                <button class="p-2 rounded-md text-white cursor-pointer w-full" :style="`background: ${primaryLight}`">{{ $t('support') }}</button>
 
             </div>
             <div class="text-center w-full mt-3 flex flex-col gap-1 px-4">
-                <TextButton v-if="authStore.authUser?.name" background="bg-red-500" title="Logout" @click="authStore.logout()" />
-                <router-link v-else :to="{ name: 'register' }" class="py-2 px-3 bg-blue-600 rounded-md text-white my-2">Create
-                    Account</router-link>
+                <TextButton v-if="authStore.authUser?.name" background="bg-red-500" :title="$t('logout')" @click="authStore.logout(true)" />
+                <router-link v-else :to="{ name: 'register' }" class="py-2 px-3 bg-blue-600 rounded-md text-white my-2">{{ $t('create_account') }}</router-link>
             </div>
             <div class="px-4 w-full mt-5">
                 <div class="w-full rounded-lg p-2 flex items-center justify-center flex-col bg-gray-800 py-6">
                     <div class="w-full flex items-center justify-center gap-4">
-                        <router-link class="w-full rounded-md text-white px-2 py-1" :style="`background: ${primaryLight}`" to="/">Terms service</router-link>
-                        <router-link class="w-full rounded-md text-white px-2 py-1" :style="`background: ${primaryLight}`" to="/">Privacy Policy</router-link>
+                        <router-link class="w-full rounded-md text-white px-2 py-1" :style="`background: ${primaryLight}`" to="/">{{ $t('terms') }}</router-link>
+                        <router-link class="w-full rounded-md text-white px-2 py-1" :style="`background: ${primaryLight}`" to="/">{{ $t('privacy') }}</router-link>
                     </div>
                     <div class="w-full text-center">
-                        <router-link class="text-sm text-gray-100" to="/">Delete account</router-link>
+                        <router-link class="text-sm text-gray-100" to="/">{{ $t('delete_account') }}</router-link>
                     </div>
                 </div>
             </div>
-            <div class="text-center w-full mt-5 flex items-center justify-between gap-1 px-4">
-                <p class="text-sm">Player ID: #<span class="font-bold">{{ authStore.authUser?.token }}</span></p>
-                <p class="text-sm">App v1.0.0</p>
+            <div class="text-center w-full mt-5 flex items-center justify-center gap-1 px-4">
+                <p class="text-sm">{{ $t('player_id') }}: #<span class="font-bold">{{ authStore.authUser?.token }}</span></p>
             </div>
             <Icon icon="system-uicons:cross-circle" width="28" height="28" class="absolute top-1 right-1 cursor-pointer"
                 @click="toggleSettings" />

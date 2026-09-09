@@ -7,6 +7,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useToast } from 'vue-toast-notification';
 import TextButton from '../buttons/TextButton.vue';
 import { primary, primaryLight } from '@/services/colors';
+import { Icon } from '@iconify/vue';
 
 const router = useRouter();
 const tost = useToast();
@@ -48,6 +49,11 @@ async function register(){
 
 <template>
     <div class="w-full max-w-[445px] my-[10px] py-5 px-2 flex flex-col items-center justify-center gap-5 rounded-md text-white relative" :style="`background: ${primaryLight}`">
+        <div class="w-full mb-3">
+            <router-link :to="{name:'home'}">
+                <Icon icon="akar-icons:arrow-back" width="24" height="24" class="text-white" />
+            </router-link>
+        </div>
         <div class="w-full flex items-center justify-center">
             <div class="w-20 w-20 rounded-full border-5 border-gray-400 relative p-1">
                 <img :src="`/avatar/avatar${authStore.avatar}.svg`" alt="">
@@ -58,20 +64,24 @@ async function register(){
         </div>
         <div class="w-full px-5">
             <div>
-                <label for="name">Your Name</label>
+                <label for="name">{{ $t('username') }}</label>
                 <input type="text" class="w-full p-3 rounded-lg border-2 border-gray-400" v-model="userForm.name" placeholder="JhonDoe" />
             </div>
             <div class="my-2">
-                <label for="email">Email Address</label>
+                <label for="email">{{ $t('email') }}</label>
                 <input type="email" class="w-full p-3 rounded-lg border-2 border-gray-400" v-model="userForm.email" placeholder="jhon_doe@gmail.com" />
             </div>
              <div>
-                <label for="name">Password</label>
+                <label for="name">{{ $t('password') }}</label>
                 <input type="password" class="w-full p-3 rounded-lg border-2 border-gray-400" v-model="userForm.password" placeholder="Pa$$w0rd!" />
             </div>
             <div class="w-full mt-5 flex items-center justify-center">
-                <TextButton @click="register" :styles="`background:${primary}`" icon="line-md:arrow-right" :loading="isLoading" title="Create Account" />
+                <TextButton @click="register" :styles="`background:${primary}`" icon="line-md:arrow-right" :loading="isLoading" :title="$t('register')" />
             </div>
+
+            <div class="w-full mt-1 text-center">
+            <router-link class="w-full text-lg text-center mt-15 text-white" :to="{ name: 'login' }">{{ $t('already_have_account') }}</router-link>
+        </div>
         </div>
 
         <!-- avatar modal  -->

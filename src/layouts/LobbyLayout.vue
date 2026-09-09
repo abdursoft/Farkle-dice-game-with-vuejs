@@ -1,5 +1,6 @@
 <script setup>
 import Settings from '@/components/modal/Settings.vue';
+import Navbar from '@/components/nav/navbar.vue';
 import { getEcho, initEcho } from '@/plugins/Reverb';
 import { primary, secondary, tertiary } from '@/services/colors';
 import { useAuthStore } from '@/stores/authStore';
@@ -17,9 +18,6 @@ function goBack() {
   window.history.back();
 }
 
-function openRoute(name) {
-  router.push({ name: name });
-}
 
 onBeforeMount(async() => {
   const auth = await authStore.authCheck();
@@ -68,7 +66,7 @@ onMounted(() => {
             @click="goBack"
           >
             <Icon icon="akar-icons:arrow-back" width="24" height="24" class="text-black" />
-            <span class="text-slate-500">Back</span>
+            <span class="text-slate-500">{{ $t('back') }}</span>
           </div>
           <button
             class="w-8 h-8 bg-white rounded-full flex items-center justify-center cursor-pointer"
@@ -91,59 +89,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Bottom Nav -->
-    <div
-      class="w-full"
-      :style="`background: linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`"
-    >
-      <div class="max-w-[445px] w-full mx-auto flex justify-around py-2 h-[60px]">
-        <button>
-          <Icon
-            icon="fluent:crown-24-filled"
-            width="34"
-            height="34"
-            class="text-gray-400 cursor-pointer hover:text-white transition"
-            @click="openRoute('credit')"
-          />
-        </button>
-        <button>
-          <Icon
-            icon="ion:dice-sharp"
-            width="34"
-            height="34"
-            @click="openRoute('reffer')"
-            class="text-gray-400 cursor-pointer hover:text-white transition"
-          />
-        </button>
-        <button
-          class="w-12 h-12 rounded-full shadow flex items-center justify-center border border-gray-100 p-2 !mb-5"
-          @click="openRoute('home')"
-        >
-          <Icon
-            icon="streamline-flex:home-2-solid"
-            width="54"
-            height="54"
-            class="text-white cursor-pointer hover:text-gray-300"
-          />
-        </button>
-        <button @click="openRoute('history')">
-          <Icon
-            icon="uil:statistics"
-            width="34"
-            height="34"
-            class="text-gray-400 cursor-pointer hover:text-white transition"
-          />
-        </button>
-        <button>
-          <Icon
-            icon="solar:gamepad-old-bold"
-            width="34"
-            height="34"
-            class="text-gray-400 cursor-pointer hover:text-white transition"
-          />
-        </button>
-      </div>
-    </div>
+    <Navbar />
 
     <!-- Auth checking -->
     <div class="h-full w-full absolute flex items-center justify-center text-white font-bold bg-slate-900" v-show="!isAuth">

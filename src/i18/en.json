@@ -1,0 +1,97 @@
+{
+    "play": "Start Game",
+    "play_now": "Play Now",
+    "play_with_friends": "Play with Friends",
+    "play_with_robot": "Play with Robot",
+    "join_game": "Join Game",
+
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "register_now": "Register Now",
+    "create_account": "Create Account",
+    "already_have_account": "Already have an account?",
+    "dont_have_account": "Don't have an account?",
+    "already_registered": "Already registered?",
+    "login_here": "Login here",
+    "forgot_password": "Forgot password?",
+
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "view_profile": "View Profile",
+    "edit_profile": "Edit Profile",
+    "settings": "Settings",
+
+    "leaderboard": "Leaderboard",
+    "rank": "Rank",
+    "wins": "Wins",
+    "losses": "Losses",
+    "draws": "Draws",
+    "total": "Total Score",
+    "credits": "Credits",
+
+    "welcome": "Welcome",
+    "welcome_back": "Welcome back!",
+    "welcome_message": "Welcome to Farkle! A fun dice game of luck and strategy.",
+
+    "roll_dice": "Roll Dice",
+    "your_turn": "Your Turn",
+    "opponent_turn": "Opponent's Turn",
+    "score": "Score",
+    "turn_score": "Turn Score",
+    "bank_score": "Bank Score",
+    "farkle": "Farkle! No points scored",
+    "game_over": "Game Over",
+    "you_win": "You Win!",
+    "you_lose": "You Lose",
+    "draw_game": "Draw Game",
+
+    "search": "Search",
+    "notifications": "Notifications",
+    "messages": "Messages",
+
+    "contact": "Contact",
+    "contact_us": "Contact Us",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "send": "Send",
+    "password": "Password",
+
+    "language": "Language",
+    "english": "English",
+    "bengali": "Bengali",
+    "hindi": "Hindi",
+    "spanish": "Spanish",
+
+    "submit": "Submit",
+    "loading": "Loading...",
+    "no_data": "No data found",
+
+    "success": "Success",
+    "error": "Error",
+    "success_message": "Action completed successfully!",
+    "error_message": "Something went wrong. Please try again.",
+
+    "invalid_credentials": "Invalid username or password",
+    "account_created": "Account created! Please login.",
+    "account_deleted": "Account deleted successfully",
+    "password_updated": "Password updated successfully",
+    "profile_updated": "Profile updated successfully",
+
+    "change_password": "Change Password",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+
+    "delete_account": "Delete Account",
+    "delete_confirmation": "Are you sure? This action cannot be undone.",
+    "yes": "Yes",
+    "no": "No", 
+
+    "player_id": "Player ID",
+    "player_name": "Player Name",
+
+    "version": "Version"
+}

@@ -5,8 +5,8 @@ import { Icon } from "@iconify/vue";
 <template>
   <div class="px-2 text-white">
     <div class="w-full flex items-center justify-between">
-        <h2 class="float-right text-lg font-bold">Credits</h2>
-        <h2 class="float-right text-lg font-bold">Total: 2200</h2>
+        <h2 class="float-right text-lg font-bold">{{ $t('credits') }}</h2>
+        <h2 class="float-right text-lg font-bold">{{ $t('total') }}: 2200</h2>
     </div>
 
     <!--Credit purchase-->
@@ -26,7 +26,7 @@ import { Icon } from "@iconify/vue";
     </div>
 
     <!--Credit history-->
-    <h2 class="text-white text-lg md:text-xl px-2 mb-2">Credit History</h2>
+    <h2 class="text-white text-lg md:text-xl px-2 mb-2">{{ $t('history') }}</h2>
     <div class="px-2 space-y-2"> 
         <div v-for="(item, index) in 10" :key="index" class="bg-slate-900 p-2 rounded-lg text-white flex items-center justify-between">
             <div>

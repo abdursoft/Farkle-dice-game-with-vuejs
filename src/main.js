@@ -13,13 +13,15 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import { createCustomI18n } from './I18'
 
 const app = createApp(App)
+const i18n = createCustomI18n('BN') // Set default locale to Bengali (Bangladesh)
 
 app.use(createPinia())
 app.use(ToastPlugin)
 app.use(router)
-
+app.use(i18n)
 
 app.mount('#app')
 AOS.init()

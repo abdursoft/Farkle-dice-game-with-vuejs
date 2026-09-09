@@ -11,7 +11,7 @@
 
             <div class="w-60 relative rounded-[18px] p-3 cursor-pointer" :style="`background: ${primaryLight}`">
                 <button @click="goPlayerVS('robot')" class="w-full py-1 text-white font-bold cursor-pointer">
-                    PLAY WITH ROBOT
+                    {{ $t('play_with_robot') }}
                 </button>
                 <div class="bg-black rounded-full h-5 text-center text-white text-sm">0/2000</div>
             </div>
@@ -26,7 +26,7 @@
             <button @click="farkle.toggleFriends()"
                 class="w-65 py-3 rounded-[24px] text-white font-bold shadow-lg cursor-pointer"
                 :style="`background: ${tertiary}`">
-                PLAY WITH FRIENDS!
+                {{ $t('play_with_friends') }}
             </button>
         </div>
     </div>

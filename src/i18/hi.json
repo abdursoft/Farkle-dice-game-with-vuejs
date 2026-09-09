@@ -1,0 +1,97 @@
+{
+    "play": "गेम शुरू करें",
+    "play_now": "अभी खेलें",
+    "play_with_friends": "दोस्तों के साथ खेलें",
+    "play_with_robot": "रोबोट के साथ खेलें",
+    "join_game": "गेम में शामिल हों",
+
+    "login": "लॉगिन",
+    "logout": "लॉगआउट",
+    "register": "रजिस्टर",
+    "register_now": "अभी रजिस्टर करें",
+    "create_account": "खाता बनाएं",
+    "already_have_account": "क्या आपके पास पहले से खाता है?",
+    "dont_have_account": "क्या आपके पास खाता नहीं है?",
+    "already_registered": "पहले से रजिस्टर हैं?",
+    "login_here": "यहाँ लॉगिन करें",
+    "forgot_password": "पासवर्ड भूल गए?",
+
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "profile": "प्रोफ़ाइल",
+    "view_profile": "प्रोफ़ाइल देखें",
+    "edit_profile": "प्रोफ़ाइल संपादित करें",
+    "settings": "सेटिंग्स",
+
+    "leaderboard": "लीडरबोर्ड",
+    "rank": "रैंक",
+    "wins": "जीत",
+    "losses": "हार",
+    "draws": "ड्रॉ",
+    "total": "कुल स्कोर",
+    "credits": "क्रेडिट",
+
+    "welcome": "स्वागत है",
+    "welcome_back": "वापसी पर स्वागत है!",
+    "welcome_message": "फार्कल में आपका स्वागत है! यह भाग्य और रणनीति का मजेदार खेल है।",
+
+    "roll_dice": "डाइस रोल करें",
+    "your_turn": "आपकी बारी",
+    "opponent_turn": "प्रतिद्वंदी की बारी",
+    "score": "स्कोर",
+    "turn_score": "टर्न स्कोर",
+    "bank_score": "स्कोर सुरक्षित करें",
+    "farkle": "फार्कल! कोई अंक नहीं मिला",
+    "game_over": "गेम समाप्त",
+    "you_win": "आप जीत गए!",
+    "you_lose": "आप हार गए",
+    "draw_game": "गेम ड्रॉ",
+
+    "search": "खोजें",
+    "notifications": "सूचनाएं",
+    "messages": "संदेश",
+
+    "contact": "संपर्क",
+    "contact_us": "संपर्क करें",
+    "email": "ईमेल",
+    "phone": "फोन",
+    "message": "संदेश",
+    "send": "भेजें",
+    "password": "पासवर्ड",
+
+    "language": "भाषा",
+    "english": "अंग्रेज़ी",
+    "bengali": "बंगाली",
+    "hindi": "हिंदी",
+    "spanish": "स्पेनिश",
+
+    "submit": "सबमिट करें",
+    "loading": "लोड हो रहा है...",
+    "no_data": "कोई डेटा नहीं मिला",
+
+    "success": "सफल",
+    "error": "त्रुटि",
+    "success_message": "कार्य सफलतापूर्वक पूरा हुआ!",
+    "error_message": "कुछ गलत हुआ, कृपया फिर से प्रयास करें।",
+
+    "invalid_credentials": "गलत उपयोगकर्ता नाम या पासवर्ड",
+    "account_created": "खाता बन गया! कृपया लॉगिन करें।",
+    "account_deleted": "खाता हटा दिया गया",
+    "password_updated": "पासवर्ड अपडेट हो गया",
+    "profile_updated": "प्रोफ़ाइल अपडेट हो गई",
+
+    "change_password": "पासवर्ड बदलें",
+    "current_password": "वर्तमान पासवर्ड",
+    "new_password": "नया पासवर्ड",
+    "confirm_password": "पासवर्ड की पुष्टि करें",
+
+    "delete_account": "खाता हटाएं",
+    "delete_confirmation": "क्या आप सुनिश्चित हैं? यह क्रिया वापस नहीं ली जा सकती।",
+    "yes": "हाँ",
+    "no": "नहीं", 
+
+    "player_id": "खिलाड़ी आईडी",
+    "player_name": "खिलाड़ी का नाम",
+
+    "version": "संस्करण"
+}

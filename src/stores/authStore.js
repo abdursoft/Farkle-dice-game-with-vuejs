@@ -83,16 +83,15 @@ export const useAuthStore = defineStore("authStore", () => {
     try {
       const res = await apiClient.post(AUTH.LOGIN, data);
 
-      authUser.value = res.data.data.user;
-      authToken.value = res.data.data.token;
+      authUser.value = res.data.user;
+      authToken.value = res.data.token;
 
-      localStorage.setItem("dicToken", res.data.data.token);
+      localStorage.setItem("dicToken", res.data.token);
 
       initEcho(authToken.value);
 
       return res;
     } catch (error) {
-      console.log(error.response);
       return error.response;
     }
   }

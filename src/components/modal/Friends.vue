@@ -40,7 +40,7 @@ async function searchFriends(){
         v-if="farkle.openFriends">
         <div class="w-full max-w-[420px] rounded-lg border-2 border-orange-600/20 shadow-lg px-3 h-auto text-center relative" :style="`background: ${primary}`">
             <div class="px-7">
-                <h3 class="text-2xl text-white lilita rounded-br-md rounded-bl-md" :style="`background:${tertiary}`">Friends!</h3>
+                <h3 class="text-2xl text-white lilita rounded-br-md rounded-bl-md" :style="`background:${tertiary}`">{{ $t('friends') }}!</h3>
             </div>
             <div class="px-4 w-full mt-5 text-white">
                 <div class="w-full flex items-center justify-between gap-3">
@@ -60,14 +60,13 @@ async function searchFriends(){
                                     <small class="text-sm text-white text-[13px]">#{{ friend.token }}</small>
                                 </div>
                             </div>
-                            <button class="px-3 py-1 rounded-md bg-green-600 text-white w-[100px] cursor-pointer" @click="emits('setChallengeID',friend.token)">Challenge</button>
+                            <button class="px-3 py-1 rounded-md bg-green-600 text-white w-[100px] cursor-pointer" @click="emits('setChallengeID',friend.token)">{{ $t('challenge') }}</button>
                         </div>
                     </template>
                 </div>
             </div>
-            <div class="text-center w-full mt-5 flex items-center justify-between gap-1 px-4 text-white">
-                <p class="text-sm">Player ID: #<span class="font-bold">{{ authStore.authUser?.token }}</span></p>
-                <p class="text-sm">App v1.0.0</p>
+            <div class="text-center w-full mt-5 flex items-center justify-center gap-1 px-4 text-white">
+                <p class="text-sm">{{ $t('player_id') }}: #<span class="font-bold">{{ authStore.authUser?.token }}</span></p>
             </div>
             <Icon icon="system-uicons:cross-circle" width="28" height="28" class="absolute top-1 right-1 cursor-pointer text-white"
                 @click="toggleFriends" />

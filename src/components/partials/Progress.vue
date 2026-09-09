@@ -2,9 +2,9 @@
     <div class="w-full p-2 flex flex-col items-center justify-center gap-3" v-if="loading">
         <div class="w-full max-w-[320px] overflow-hidden h-6 rounded-[15px] bg-gray-400 z-50 relative">
             <div class="h-6 bg-orange-400 transition-all duration-300" :style="{ width: progress + '%' }"></div>
-            <span class="text-center text-white font-bold absolute top-0 left-0 w-full h-full">{{ progress }}%</span>
+            <span class="text-center text-white font-bold absolute top-0 left-0 w-full h-full">{{ $n(progress) }}%</span>
         </div>
-        <h3 class="text-base uppercase lilita font-[300] text-center text-white">{{ props.title }}...</h3>
+        <h3 class="text-base uppercase lilita font-[300] text-center text-white">{{ $t(props.title) }}...</h3>
     </div>
 </template>
 
@@ -16,7 +16,7 @@ const emits = defineEmits(['endProgress']);
 const props = defineProps({
     title:{
         String,
-        default:'Loading'
+        default:'loading'
     }
 });
 
